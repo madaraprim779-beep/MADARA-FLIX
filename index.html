@@ -1,313 +1,205 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#e50914">
-  <meta name="description" content="MADARA FLIX — TON UNIVERS. SANS LIMITES.">
-  <title>MADARA FLIX — TON UNIVERS. SANS LIMITES.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090909">
+  <meta name="description" content="MADARA FLIX : découvre des films, séries, animés et créations originales.">
   <link rel="manifest" href="./manifest.json">
+  <title>MADARA FLIX — Ton univers sans limites</title>
 
   <style>
     :root {
       --red: #e50914;
-      --bg: #080808;
-      --panel: #151515;
-      --muted: #a5a5a5;
+      --red2: #ff303a;
+      --bg: #090909;
+      --panel: #171717;
+      --muted: #aaa;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
 
     body {
+      margin: 0;
       background: var(--bg);
       color: white;
       font-family: Arial, Helvetica, sans-serif;
-      min-height: 100vh;
     }
 
-    button, input {
-      font: inherit;
-    }
+    button, input { font: inherit; }
 
-    button {
-      cursor: pointer;
-    }
+    button, a { -webkit-tap-highlight-color: transparent; }
 
-    /* ÉCRAN DE DÉMARRAGE */
-    #splash {
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      background:
-        radial-gradient(ellipse at center, #4b080d 0%, #170406 42%, #050505 80%);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      transition: opacity .7s ease, visibility .7s ease;
-    }
+    a { color: inherit; text-decoration: none; }
 
-    #splash.hide {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    .mf-logo {
-      width: 110px;
-      height: 110px;
-      display: grid;
-      place-items: center;
-      border: 3px solid var(--red);
-      border-radius: 28px;
-      background: linear-gradient(145deg, #252525, #080808);
-      box-shadow: 0 0 25px #e5091455, inset 0 0 20px #e5091420;
-      font-size: 39px;
-      font-weight: 900;
-      letter-spacing: -4px;
-      animation: logoIntro 1.2s ease both;
-    }
-
-    .mf-logo span {
-      color: var(--red);
-    }
-
-    .splash-name {
-      margin-top: 27px;
-      font-size: clamp(27px, 7vw, 43px);
-      font-weight: 900;
-      letter-spacing: 3px;
-      animation: riseIn 1s .3s both;
-    }
-
-    .splash-name span {
-      color: var(--red);
-    }
-
-    .slogan {
-      margin-top: 13px;
-      color: #d1d1d1;
-      font-size: 11px;
-      letter-spacing: 3px;
-      text-align: center;
-      animation: riseIn 1s .6s both;
-    }
-
-    .loader {
-      width: 125px;
-      height: 3px;
-      margin-top: 35px;
-      overflow: hidden;
-      background: #333;
-      border-radius: 20px;
-    }
-
-    .loader::after {
-      content: "";
-      display: block;
-      width: 45%;
-      height: 100%;
-      background: var(--red);
-      animation: loading 1.3s ease-in-out infinite;
-    }
-
-    @keyframes logoIntro {
-      from { opacity: 0; transform: scale(.5) rotate(-12deg); }
-      to { opacity: 1; transform: scale(1) rotate(0); }
-    }
-
-    @keyframes riseIn {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes loading {
-      from { transform: translateX(-120%); }
-      to { transform: translateX(300%); }
-    }
-
-    /* NAVIGATION */
-    header {
-      height: 72px;
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 15px;
-      padding: 0 6%;
-      background: #080808ed;
-      border-bottom: 1px solid #252525;
-      position: sticky;
-      top: 0;
-      z-index: 50;
+      padding: 15px 5%;
+      background: rgba(8,8,8,.96);
+      border-bottom: 1px solid #262626;
       backdrop-filter: blur(12px);
     }
 
     .brand {
-      font-size: 23px;
+      color: var(--red);
+      font-size: clamp(20px, 4vw, 29px);
       font-weight: 900;
-      white-space: nowrap;
       letter-spacing: -1px;
+      white-space: nowrap;
     }
 
-    .brand span {
-      color: var(--red);
-    }
+    .brand span { color: white; }
 
-    nav {
+    .nav {
       display: flex;
-      gap: 22px;
-      align-items: center;
-    }
-
-    nav a {
+      gap: 20px;
       color: #ddd;
-      text-decoration: none;
-      font-size: 13px;
+      font-size: 14px;
     }
 
-    nav a:hover {
-      color: var(--red);
-    }
+    .nav a:hover { color: var(--red2); }
 
-    .install-btn {
-      border: 1px solid #555;
-      background: transparent;
+    .search {
+      width: min(230px, 36vw);
+      padding: 10px 13px;
       color: white;
-      border-radius: 6px;
-      padding: 9px 12px;
-      font-size: 12px;
+      background: #1b1b1b;
+      border: 1px solid #333;
+      border-radius: 22px;
+      outline: none;
     }
 
-    /* ACCUEIL */
+    .search:focus { border-color: var(--red); }
+
     .hero {
       min-height: 440px;
       display: flex;
       align-items: center;
       padding: 60px 7%;
+      position: relative;
+      overflow: hidden;
       background:
-        linear-gradient(90deg, #080808 0%, #080808ee 37%, #08080855 100%),
-        radial-gradient(ellipse at 80% 35%, #790b14 0%, #26070a 36%, #080808 75%);
-      border-bottom: 1px solid #242424;
+        radial-gradient(ellipse at 80% 35%, rgba(229,9,20,.30), transparent 38%),
+        radial-gradient(ellipse at 70% 90%, rgba(105,0,0,.25), transparent 40%),
+        linear-gradient(90deg, #080808 5%, rgba(8,8,8,.91) 42%, rgba(8,8,8,.28)),
+        linear-gradient(135deg, #30090c, #111 55%, #350b0e);
+    }
+
+    .hero::after {
+      content: "MF";
+      position: absolute;
+      right: 7%;
+      top: 50%;
+      transform: translateY(-50%) rotate(-8deg);
+      font-size: clamp(130px, 27vw, 330px);
+      font-weight: 900;
+      color: rgba(255,255,255,.035);
+      text-shadow: 0 0 70px rgba(229,9,20,.12);
+      pointer-events: none;
     }
 
     .hero-content {
-      max-width: 600px;
+      position: relative;
+      z-index: 1;
+      max-width: 620px;
     }
 
     .eyebrow {
       color: #ff555d;
-      font-size: 11px;
-      font-weight: bold;
+      text-transform: uppercase;
       letter-spacing: 3px;
-      margin-bottom: 18px;
+      font-weight: bold;
+      font-size: 12px;
     }
 
     .hero h1 {
-      font-size: clamp(38px, 8vw, 66px);
-      line-height: 1.02;
-      margin-bottom: 20px;
+      font-size: clamp(37px, 7vw, 76px);
+      line-height: .98;
+      margin: 16px 0;
       letter-spacing: -2px;
     }
 
-    .hero h1 span {
-      color: var(--red);
-    }
+    .hero h1 span { color: var(--red); }
 
     .hero p {
       color: #ccc;
-      max-width: 470px;
+      line-height: 1.7;
+      max-width: 480px;
       font-size: 15px;
-      line-height: 1.8;
     }
 
-    .hero-actions {
+    .actions {
       display: flex;
-      gap: 12px;
       flex-wrap: wrap;
+      gap: 12px;
       margin-top: 25px;
     }
 
-    .primary-btn, .secondary-btn {
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 9px;
+      border: 0;
+      border-radius: 6px;
       padding: 13px 19px;
-      border-radius: 5px;
-      border: none;
       font-weight: bold;
+      cursor: pointer;
     }
 
-    .primary-btn {
+    .btn-primary {
       background: var(--red);
       color: white;
     }
 
-    .primary-btn:hover {
-      background: #ff2630;
-    }
+    .btn-primary:hover { background: #ff202a; }
 
-    .secondary-btn {
+    .btn-secondary {
+      background: #333;
       color: white;
-      background: #292929;
-      border: 1px solid #454545;
     }
 
-    /* CATALOGUE */
-    main {
-      padding: 35px 6% 55px;
+    .section {
+      padding: 30px 5%;
     }
 
     .section-heading {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 15px;
+      align-items: center;
+      gap: 12px;
       margin-bottom: 18px;
     }
 
-    .section-heading h2 {
-      font-size: 21px;
+    .section h2 {
+      margin: 0;
+      font-size: clamp(20px, 4vw, 27px);
     }
 
-    .section-heading p {
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 6px;
-    }
-
-    .search {
-      width: 100%;
-      max-width: 310px;
-      background: #171717;
-      border: 1px solid #333;
-      color: white;
-      padding: 12px 14px;
-      border-radius: 7px;
-      outline: none;
-    }
-
-    .search:focus {
-      border-color: var(--red);
-    }
+    .section-heading small { color: var(--muted); }
 
     .categories {
       display: flex;
-      gap: 9px;
-      overflow-x: auto;
-      padding-bottom: 20px;
-      margin-top: 8px;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 23px;
     }
 
     .category {
-      flex-shrink: 0;
-      border: 1px solid #353535;
+      padding: 9px 16px;
+      border: 1px solid #333;
+      border-radius: 25px;
       color: #ddd;
-      background: #171717;
-      border-radius: 30px;
-      padding: 9px 15px;
-      font-size: 12px;
+      background: #151515;
+      cursor: pointer;
     }
 
     .category.active,
@@ -317,523 +209,348 @@
       color: white;
     }
 
-    .catalogue {
+    .grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 17px;
     }
 
     .movie {
       min-width: 0;
-      background: var(--panel);
-      border: 1px solid #242424;
-      border-radius: 10px;
       overflow: hidden;
+      background: var(--panel);
+      border: 1px solid #292929;
+      border-radius: 9px;
       transition: transform .2s, border-color .2s;
     }
 
     .movie:hover {
       transform: translateY(-4px);
-      border-color: #6b2428;
+      border-color: #7d2429;
     }
 
     .poster {
-      min-height: 150px;
-      aspect-ratio: 3 / 4;
+      position: relative;
+      aspect-ratio: 2 / 3;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      padding: 12px;
-      text-align: center;
+      overflow: hidden;
       background:
-        radial-gradient(circle at 50% 30%, #5d1119, #191011 52%, #090909);
+        radial-gradient(ellipse at 50% 30%, var(--glow, #6e1018), transparent 50%),
+        linear-gradient(145deg, #282020, #080808 75%);
     }
 
-    .poster .symbol {
-      font-size: 48px;
+    .poster::before {
+      content: "";
+      position: absolute;
+      width: 65%;
+      height: 65%;
+      border-radius: 50%;
+      background: var(--glow, #7c1119);
+      opacity: .18;
+      filter: blur(28px);
+    }
+
+    .poster-art {
+      position: relative;
+      font-size: clamp(42px, 6vw, 76px);
       font-weight: 900;
-      color: #ff424a;
-      text-shadow: 0 0 25px #e5091466;
+      color: rgba(255,255,255,.9);
+      text-shadow: 0 0 30px var(--glow, #e50914);
     }
 
-    .poster .poster-title {
-      font-weight: 900;
-      font-size: 17px;
-      letter-spacing: 1px;
+    .poster-label {
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      padding: 5px 7px;
+      border-radius: 3px;
+      background: var(--red);
+      font-size: 10px;
+      font-weight: bold;
     }
 
-    .movie-info {
-      padding: 13px;
-    }
+    .movie-info { padding: 11px; }
 
     .movie-info h3 {
       font-size: 14px;
-      margin-bottom: 7px;
+      margin: 0 0 7px;
+      overflow-wrap: anywhere;
     }
 
     .movie-info p {
       color: var(--muted);
-      font-size: 11px;
-      line-height: 1.6;
+      font-size: 12px;
+      margin: 0 0 10px;
     }
 
     .movie-info button {
       width: 100%;
-      margin-top: 12px;
-      padding: 10px;
-      background: #292929;
-      border: 1px solid #444;
-      border-radius: 5px;
+      padding: 9px 5px;
       color: white;
-      font-size: 12px;
+      background: #292929;
+      border: 0;
+      border-radius: 5px;
+      cursor: pointer;
     }
 
-    .movie-info button:hover {
-      background: var(--red);
-      border-color: var(--red);
-    }
+    .movie-info button:hover { background: var(--red); }
 
     .empty {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 35px 10px;
-      color: var(--muted);
-    }
-
-    /* LECTEUR */
-    .player-section {
       display: none;
-      margin-top: 40px;
-      padding: 20px;
-      background: #141414;
-      border: 1px solid #333;
-      border-radius: 10px;
+      color: #bbb;
+      padding: 30px 0;
+      text-align: center;
     }
 
-    .player-section.visible {
-      display: block;
+    .original {
+      margin: 10px 5% 35px;
+      padding: 28px;
+      border: 1px solid #442024;
+      border-radius: 12px;
+      background: linear-gradient(120deg, #250a0c, #141414 65%);
     }
 
-    .player-section h2 {
-      margin-bottom: 14px;
-    }
+    .original h2 { margin-top: 0; }
 
-    .player-section video {
-      display: block;
-      width: 100%;
-      max-height: 65vh;
-      background: black;
-      border-radius: 6px;
-    }
-
-    .player-section p {
-      margin-top: 12px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
+    .original p {
+      color: #ccc;
+      line-height: 1.7;
     }
 
     footer {
-      padding: 28px 6%;
-      text-align: center;
-      border-top: 1px solid #242424;
+      padding: 30px 5%;
+      border-top: 1px solid #262626;
       color: #888;
-      font-size: 12px;
+      font-size: 13px;
       line-height: 1.8;
+      text-align: center;
     }
 
-    footer strong {
-      color: white;
-    }
+    footer a { color: #ddd; }
 
-    @media (max-width: 850px) {
-      .catalogue {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      nav {
-        gap: 12px;
-      }
-
-      nav a {
-        font-size: 12px;
-      }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .nav { gap: 12px; }
     }
 
     @media (max-width: 600px) {
-      header {
-        height: 62px;
-        padding: 0 4%;
-      }
-
-      .brand {
-        font-size: 19px;
-      }
-
-      nav a {
-        display: none;
-      }
-
-      .install-btn {
-        padding: 8px;
-      }
-
-      .hero {
-        min-height: 390px;
-        padding: 45px 6%;
-      }
-
-      .hero p {
-        font-size: 14px;
-      }
-
-      main {
-        padding: 28px 4% 40px;
-      }
-
-      .section-heading {
-        align-items: stretch;
-        flex-direction: column;
-      }
-
-      .search {
-        max-width: none;
-      }
-
-      .catalogue {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
-      }
-
-      .poster {
-        min-height: 140px;
-      }
-
-      .poster .symbol {
-        font-size: 38px;
-      }
-
-      .movie-info {
-        padding: 10px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: .01ms !important;
-        transition-duration: .01ms !important;
-      }
+      .topbar { flex-wrap: wrap; padding: 13px 4%; }
+      .nav { order: 3; width: 100%; justify-content: space-between; }
+      .search { flex: 1; width: auto; min-width: 100px; }
+      .hero { min-height: 390px; padding: 42px 6%; }
+      .hero::after { right: -5%; opacity: .7; }
+      .hero p { font-size: 14px; }
+      .section { padding: 25px 4%; }
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .movie-info { padding: 9px; }
+      .original { margin: 5px 4% 25px; padding: 20px; }
     }
   </style>
 </head>
 
 <body>
-  <!-- ÉCRAN DE DÉMARRAGE -->
-  <div id="splash" aria-label="MADARA FLIX démarre">
-    <div class="mf-logo">M<span>F</span></div>
-    <div class="splash-name">MADARA <span>FLIX</span></div>
-    <div class="slogan">TON UNIVERS. SANS LIMITES.</div>
-    <div class="loader"></div>
-  </div>
+  <header class="topbar">
+    <a class="brand" href="./index.html">MADARA <span>FLIX</span></a>
 
-  <!-- EN-TÊTE -->
-  <header>
-    <a class="brand" href="#" style="text-decoration:none;color:white">
-      MADARA <span>FLIX</span>
-    </a>
-
-    <nav aria-label="Navigation principale">
+    <nav class="nav" aria-label="Navigation principale">
       <a href="#accueil">Accueil</a>
       <a href="#catalogue">Catalogue</a>
-      <a href="#apropos">À propos</a>
+      <a href="#originaux">Originaux</a>
     </nav>
 
-    <button class="install-btn" id="installButton" hidden>
-      Installer l'app
-    </button>
+    <input class="search" id="search" type="search"
+      placeholder="Rechercher…" aria-label="Rechercher un titre">
   </header>
 
-  <!-- ACCUEIL -->
-  <section class="hero" id="accueil">
-    <div class="hero-content">
-      <div class="eyebrow">BIENVENUE DANS TON UNIVERS</div>
-      <h1>LE CINÉMA.<br>À TA <span>FAÇON.</span></h1>
-      <p>
-        Découvre MADARA FLIX, ton espace dédié aux films, aux séries,
-        aux animes et aux créations originales autorisées.
-        Un univers à construire, où que tu sois.
-      </p>
-      <div class="hero-actions">
-        <button class="primary-btn" id="exploreButton">
-          Explorer le catalogue
-        </button>
-        <button class="secondary-btn" id="aboutButton">
-          Découvrir le projet
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- CATALOGUE -->
   <main>
-    <section id="catalogue">
-      <div class="section-heading">
-        <div>
-          <h2>Explorer le catalogue</h2>
-          <p>Des exemples de catégories pour préparer la plateforme.</p>
-        </div>
-        <input
-          class="search"
-          id="searchInput"
-          type="search"
-          placeholder="Rechercher un titre..."
-          aria-label="Rechercher un titre"
-        >
-      </div>
-
-      <div class="categories" aria-label="Filtrer le catalogue">
-        <button class="category active" data-category="Tous">Tout</button>
-        <button class="category" data-category="Anime">Anime</button>
-        <button class="category" data-category="Films">Films</button>
-        <button class="category" data-category="Séries">Séries</button>
-        <button class="category" data-category="Original">Originaux</button>
-      </div>
-
-      <div class="catalogue" id="movieGrid"></div>
-
-      <div class="player-section" id="playerSection">
-        <h2 id="playerTitle">Lecteur vidéo</h2>
-        <video id="videoPlayer" controls playsinline preload="metadata">
-          Ton navigateur ne prend pas en charge la lecture vidéo.
-        </video>
-        <p id="playerMessage">
-          Seules les vidéos que tu es autorisé à diffuser doivent être ajoutées.
+    <section class="hero" id="accueil">
+      <div class="hero-content">
+        <div class="eyebrow">Le streaming nouvelle génération</div>
+        <h1>TON UNIVERS.<br><span>SANS LIMITES.</span></h1>
+        <p>
+          Découvre un univers de films, de séries, d'animés
+          et de créations originales sur MADARA FLIX.
         </p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#catalogue">▶ Explorer le catalogue</a>
+          <a class="btn btn-secondary" href="#originaux">✦ Nos créations</a>
+        </div>
       </div>
     </section>
 
-    <section id="apropos" style="padding-top:45px">
+    <section class="section" id="catalogue">
       <div class="section-heading">
-        <div>
-          <h2>Un univers en construction</h2>
-          <p>
-            MADARA FLIX commence par une version web compatible avec les
-            écrans mobiles et ordinateurs. Les versions APK, Apple et TV
-            demanderont des étapes supplémentaires.
-          </p>
-        </div>
+        <h2>Explorer</h2>
+        <small id="count">6 titres de démonstration</small>
       </div>
+
+      <div class="categories" aria-label="Catégories">
+        <button class="category active" data-category="Tout">Tout</button>
+        <button class="category" data-category="Film">Films</button>
+        <button class="category" data-category="Série">Séries</button>
+        <button class="category" data-category="Animé">Animés</button>
+        <button class="category" data-category="Original">Originaux</button>
+      </div>
+
+      <div class="grid" id="movieGrid">
+        <article class="movie" data-title="L'Empire Rouge" data-category="Film">
+          <div class="poster" style="--glow:#a80d19">
+            <span class="poster-label">DÉMO</span>
+            <span class="poster-art">ER</span>
+          </div>
+          <div class="movie-info">
+            <h3>L'Empire Rouge</h3>
+            <p>Film · Démo</p>
+            <button data-title="L'Empire Rouge">▶ Ouvrir</button>
+          </div>
+        </article>
+
+        <article class="movie" data-title="Les Ombres" data-category="Série">
+          <div class="poster" style="--glow:#5b245e">
+            <span class="poster-label">DÉMO</span>
+            <span class="poster-art">LO</span>
+          </div>
+          <div class="movie-info">
+            <h3>Les Ombres</h3>
+            <p>Série · Démo</p>
+            <button data-title="Les Ombres">▶ Ouvrir</button>
+          </div>
+        </article>
+
+        <article class="movie" data-title="Le Dernier Ninja" data-category="Animé">
+          <div class="poster" style="--glow:#b75b19">
+            <span class="poster-label">DÉMO</span>
+            <span class="poster-art">LN</span>
+          </div>
+          <div class="movie-info">
+            <h3>Le Dernier Ninja</h3>
+            <p>Animé · Démo</p>
+            <button data-title="Le Dernier Ninja">▶ Ouvrir</button>
+          </div>
+        </article>
+
+        <article class="movie" data-title="Nuit Éternelle" data-category="Film">
+          <div class="poster" style="--glow:#164d74">
+            <span class="poster-label">DÉMO</span>
+            <span class="poster-art">NE</span>
+          </div>
+          <div class="movie-info">
+            <h3>Nuit Éternelle</h3>
+            <p>Film · Démo</p>
+            <button data-title="Nuit Éternelle">▶ Ouvrir</button>
+          </div>
+        </article>
+
+        <article class="movie" data-title="Mission Zéro" data-category="Série">
+          <div class="poster" style="--glow:#48632a">
+            <span class="poster-label">DÉMO</span>
+            <span class="poster-art">MZ</span>
+          </div>
+          <div class="movie-info">
+            <h3>Mission Zéro</h3>
+            <p>Série · Démo</p>
+            <button data-title="Mission Zéro">▶ Ouvrir</button>
+          </div>
+        </article>
+
+        <article class="movie" data-title="Au-delà des étoiles" data-category="Original">
+          <div class="poster" style="--glow:#5240a2">
+            <span class="poster-label">DÉMO</span>
+            <span class="poster-art">★</span>
+          </div>
+          <div class="movie-info">
+            <h3>Au-delà des étoiles</h3>
+            <p>Original · Démo</p>
+            <button data-title="Au-delà des étoiles">▶ Ouvrir</button>
+          </div>
+        </article>
+      </div>
+
+      <div class="empty" id="empty">
+        Aucun titre trouvé. Essaie un autre mot ou une autre catégorie.
+      </div>
+    </section>
+
+    <section class="original" id="originaux">
+      <div class="eyebrow">MADARA FLIX ORIGINALS</div>
+      <h2>Nos histoires. Notre univers.</h2>
+      <p>
+        Cette zone accueillera les créations originales MADARA FLIX.
+        Les titres présentés actuellement sont des exemples visuels :
+        aucune vidéo n'est incluse automatiquement.
+      </p>
+      <a class="btn btn-primary" href="./catalogue.html">Accéder au lecteur</a>
     </section>
   </main>
 
   <footer>
-    <strong>MADARA FLIX</strong><br>
-    TON UNIVERS. SANS LIMITES.<br>
-    <span>Les cartes affichées sont des exemples de démonstration.
-    Aucun catalogue de films ou d'épisodes sous licence n'est fourni ici.</span>
+    <strong>MADARA FLIX</strong> — TON UNIVERS. SANS LIMITES.<br>
+    Catalogue de démonstration · Diffusion de contenus autorisés uniquement.<br>
+    <a href="./catalogue.html">Lecteur vidéo</a>
+    · <a href="./manifest.json">Informations de l'application</a>
   </footer>
 
   <script>
-    "use strict";
+    const search = document.getElementById("search");
+    const cards = [...document.querySelectorAll(".movie")];
+    const categoryButtons = [...document.querySelectorAll(".category")];
+    const empty = document.getElementById("empty");
+    const count = document.getElementById("count");
 
-    const titles = [
-      {
-        name: "Univers Anime",
-        category: "Anime",
-        symbol: "ア",
-        description: "Un espace pour les animes diffusés légalement."
-      },
-      {
-        name: "Cinéma Original",
-        category: "Films",
-        symbol: "MF",
-        description: "Une vitrine pour les films autorisés."
-      },
-      {
-        name: "Séries & Histoires",
-        category: "Séries",
-        symbol: "S",
-        description: "Une place pour les séries et leurs épisodes."
-      },
-      {
-        name: "Créations MADARA",
-        category: "Original",
-        symbol: "M",
-        description: "Un espace pour les créations originales du projet."
-      },
-      {
-        name: "Anime Découverte",
-        category: "Anime",
-        symbol: "影",
-        description: "Une sélection à compléter avec des sources autorisées."
-      },
-      {
-        name: "Films du Monde",
-        category: "Films",
-        symbol: "世界",
-        description: "Des films dont les droits de diffusion sont confirmés."
-      },
-      {
-        name: "Séries Originales",
-        category: "Séries",
-        symbol: "01",
-        description: "Des histoires originales à découvrir prochainement."
-      },
-      {
-        name: "MADARA Studio",
-        category: "Original",
-        symbol: "MF+",
-        description: "Les productions originales de MADARA FLIX."
-      }
-    ];
+    let selectedCategory = "Tout";
 
-    const grid = document.getElementById("movieGrid");
-    const searchInput = document.getElementById("searchInput");
-    const categoryButtons = document.querySelectorAll(".category");
-    const playerSection = document.getElementById("playerSection");
-    const videoPlayer = document.getElementById("videoPlayer");
-    const playerTitle = document.getElementById("playerTitle");
-    const playerMessage = document.getElementById("playerMessage");
+    function filterMovies() {
+      const query = search.value.trim().toLocaleLowerCase("fr");
+      let visible = 0;
 
-    let activeCategory = "Tous";
-
-    function renderCatalogue() {
-      const term = searchInput.value.trim().toLocaleLowerCase("fr");
-
-      const filtered = titles.filter(item => {
+      cards.forEach(card => {
+        const title = card.dataset.title.toLocaleLowerCase("fr");
+        const category = card.dataset.category;
+        const matchesText = title.includes(query);
         const matchesCategory =
-          activeCategory === "Tous" || item.category === activeCategory;
+          selectedCategory === "Tout" || category === selectedCategory;
 
-        const matchesSearch =
-          item.name.toLocaleLowerCase("fr").includes(term) ||
-          item.description.toLocaleLowerCase("fr").includes(term);
+        const show = matchesText && matchesCategory;
+        card.style.display = show ? "" : "none";
 
-        return matchesCategory && matchesSearch;
+        if (show) visible++;
       });
 
-      grid.replaceChildren();
-
-      if (filtered.length === 0) {
-        const empty = document.createElement("p");
-        empty.className = "empty";
-        empty.textContent = "Aucun résultat. Essaie une autre recherche.";
-        grid.appendChild(empty);
-        return;
-      }
-
-      filtered.forEach(item => {
-        const card = document.createElement("article");
-        card.className = "movie";
-
-        const poster = document.createElement("div");
-        poster.className = "poster";
-
-        const symbol = document.createElement("div");
-        symbol.className = "symbol";
-        symbol.textContent = item.symbol;
-
-        const posterTitle = document.createElement("div");
-        posterTitle.className = "poster-title";
-        posterTitle.textContent = "MADARA FLIX";
-
-        poster.append(symbol, posterTitle);
-
-        const info = document.createElement("div");
-        info.className = "movie-info";
-
-        const heading = document.createElement("h3");
-        heading.textContent = item.name;
-
-        const category = document.createElement("p");
-        category.textContent = item.category;
-
-        const description = document.createElement("p");
-        description.textContent = item.description;
-
-        const button = document.createElement("button");
-        button.type = "button";
-        button.textContent = "En savoir plus";
-        button.addEventListener("click", () => showDetails(item));
-
-        info.append(heading, category, description, button);
-        card.append(poster, info);
-        grid.appendChild(card);
-      });
+      empty.style.display = visible ? "none" : "block";
+      count.textContent = visible + (visible > 1 ? " titres" : " titre");
     }
 
-    function showDetails(item) {
-      playerSection.classList.add("visible");
-      playerTitle.textContent = item.name;
-
-      videoPlayer.pause();
-      videoPlayer.removeAttribute("src");
-      videoPlayer.load();
-
-      playerMessage.textContent =
-        "Cette carte est une démonstration : aucun épisode n'est attaché. " +
-        "Nous ajouterons ensuite des vidéos autorisées ou des liens vers " +
-        "des services officiels.";
-
-      playerSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    search.addEventListener("input", filterMovies);
 
     categoryButtons.forEach(button => {
       button.addEventListener("click", () => {
-        activeCategory = button.dataset.category;
+        selectedCategory = button.dataset.category;
 
         categoryButtons.forEach(item => {
           item.classList.toggle("active", item === button);
         });
 
-        renderCatalogue();
+        filterMovies();
       });
     });
 
-    searchInput.addEventListener("input", renderCatalogue);
-
-    document.getElementById("exploreButton").addEventListener("click", () => {
-      document.getElementById("catalogue").scrollIntoView({
-        behavior: "smooth"
+    document.querySelectorAll(".movie-info button").forEach(button => {
+      button.addEventListener("click", () => {
+        const title = button.dataset.title;
+        const destination = new URL("./catalogue.html", window.location.href);
+        destination.searchParams.set("title", title);
+        window.location.href = destination.href;
       });
     });
 
-    document.getElementById("aboutButton").addEventListener("click", () => {
-      document.getElementById("apropos").scrollIntoView({
-        behavior: "smooth"
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
       });
-    });
-
-    /* Écran de démarrage */
-    window.addEventListener("load", () => {
-      window.setTimeout(() => {
-        document.getElementById("splash").classList.add("hide");
-      }, 2200);
-    });
-
-    /* Installation PWA sur les navigateurs compatibles */
-    let installPrompt = null;
-    const installButton = document.getElementById("installButton");
-
-    window.addEventListener("beforeinstallprompt", event => {
-      event.preventDefault();
-      installPrompt = event;
-      installButton.hidden = false;
-    });
-
-    installButton.addEventListener("click", async () => {
-      if (!installPrompt) return;
-
-      installPrompt.prompt();
-      await installPrompt.userChoice;
-      installPrompt = null;
-      installButton.hidden = true;
-    });
-
-    renderCatalogue();
-
-    /* Enregistrement du service worker, ajouté dans une fiche ultérieure. */
+    }
   </script>
 </body>
 </html>
+```</code>
