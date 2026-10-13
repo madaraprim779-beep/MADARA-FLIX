@@ -1,0 +1,390 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#e50914">
+  <title>MADARA FLIX — Adaptive Player</title>
+
+  <style>
+    :root {
+      --red: #e50914;
+      --bg: #080808;
+      --panel: #181818;
+      --muted: #aaa;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      padding: 18px 5%;
+      background: #111;
+      border-bottom: 1px solid #333;
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: 900;
+      color: white;
+      text-decoration: none;
+    }
+
+    .brand span { color: var(--red); }
+
+    main {
+      max-width: 1000px;
+      margin: auto;
+      padding: 24px 15px 45px;
+    }
+
+    h1 { font-size: clamp(25px, 5vw, 38px); }
+
+    .muted {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .player {
+      background: #000;
+      border: 1px solid #333;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    video {
+      display: block;
+      width: 100%;
+      max-height: 65vh;
+      aspect-ratio: 16 / 9;
+      background: #000;
+    }
+
+    .panel {
+      margin-top: 18px;
+      padding: 17px;
+      background: var(--panel);
+      border: 1px solid #333;
+      border-radius: 10px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #444;
+      color: white;
+      background: #090909;
+      font-size: 14px;
+    }
+
+    input:focus, select:focus { border-color: var(--red); }
+
+    button {
+      background: var(--red);
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field { margin-bottom: 15px; }
+
+    .status {
+      margin-top: 14px;
+      background: #252525;
+      padding: 12px;
+      border-radius: 6px;
+      color: #ddd;
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .quality {
+      display: inline-block;
+      padding: 5px 9px;
+      margin: 4px 3px 0 0;
+      border: 1px solid #444;
+      border-radius: 5px;
+      font-size: 12px;
+    }
+
+    footer {
+      padding: 24px;
+      text-align: center;
+      border-top: 1px solid #333;
+      color: #888;
+      font-size: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; gap: 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a class="brand" href="./index.html">MADARA <span>FLIX</span></a>
+  </header>
+
+  <main>
+    <h1>Lecteur adaptatif</h1>
+    <p class="muted">
+      Lecture HLS avec sélection des résolutions réellement annoncées
+      par la source vidéo.
+    </p>
+
+    <div class="player">
+      <video id="video" controls playsinline preload="metadata"></video>
+    </div>
+
+    <section class="panel">
+      <div class="field">
+        <label for="url">URL du flux HLS autorisé (.m3u8)</label>
+        <input id="url" type="url" placeholder="https://serveur.example/video/master.m3u8">
+      </div>
+
+      <div class="grid">
+        <div class="field">
+          <label for="quality">Qualité</label>
+          <select id="quality" disabled>
+            <option value="-1">Automatique</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="loadButton">Charger le flux</label>
+          <button id="loadButton">Charger la vidéo</button>
+        </div>
+      </div>
+
+      <div id="status" class="status" role="status" aria-live="polite">
+        En attente d'une source HLS.
+      </div>
+
+      <div id="availableQualities" style="margin-top:12px"></div>
+    </section>
+
+    <p class="muted" style="font-size:13px;margin-top:20px">
+      Une qualité 8K ne sera disponible que si le flux la propose.
+      Le navigateur, l'appareil, le débit et le serveur doivent aussi
+      prendre en charge cette lecture. N'utilise que des sources que
+      tu es autorisé à diffuser.
+    </p>
+  </main>
+
+  <footer>MADARA FLIX — TON UNIVERS. SANS LIMITES.</footer>
+
+  <!-- Bibliothèque HLS.js pour les navigateurs qui en ont besoin -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.20/dist/hls.min.js"></script>
+
+  <script>
+    const video = document.getElementById("video");
+    const urlInput = document.getElementById("url");
+    const qualitySelect = document.getElementById("quality");
+    const loadButton = document.getElementById("loadButton");
+    const status = document.getElementById("status");
+    const available = document.getElementById("availableQualities");
+
+    let hls = null;
+
+    function message(text) {
+      status.textContent = text;
+    }
+
+    function cleanPlayer() {
+      if (hls) {
+        hls.destroy();
+        hls = null;
+      }
+
+      video.pause();
+      video.removeAttribute("src");
+      video.load();
+
+      qualitySelect.innerHTML =
+        '<option value="-1">Automatique</option>';
+      qualitySelect.disabled = true;
+      available.replaceChildren();
+    }
+
+    function addQualityLabel(text) {
+      const tag = document.createElement("span");
+      tag.className = "quality";
+      tag.textContent = text;
+      available.appendChild(tag);
+    }
+
+    function setupQualities() {
+      qualitySelect.innerHTML =
+        '<option value="-1">Automatique</option>';
+
+      const levels = hls.levels || [];
+      const seen = new Set();
+
+      levels.forEach((level, index) => {
+        const height = level.height || 0;
+        const width = level.width || 0;
+        const label = height ? `${height}p` : `Niveau ${index + 1}`;
+
+        const option = document.createElement("option");
+        option.value = String(index);
+        option.textContent = label +
+          (width ? ` (${width} × ${height})` : "");
+
+        qualitySelect.appendChild(option);
+
+        const key = `${width}x${height}`;
+        if (!seen.has(key)) {
+          addQualityLabel(
+            height ? `${label}${width ? ` · ${width}×${height}` : ""}` :
+            label
+          );
+          seen.add(key);
+        }
+      });
+
+      qualitySelect.disabled = levels.length === 0;
+
+      if (levels.length) {
+        message(
+          "Flux détecté. " + levels.length +
+          " niveau(x) vidéo annoncé(s). Choisis Automatique ou une qualité disponible."
+        );
+      } else {
+        message(
+          "Flux détecté, mais aucune résolution n'est encore disponible."
+        );
+      }
+    }
+
+    function loadStream() {
+      const url = urlInput.value.trim();
+
+      if (!url) {
+        message("Entre d'abord l'adresse de ton flux HLS.");
+        return;
+      }
+
+      try {
+        const parsed = new URL(url);
+
+        if (!["https:", "http:"].includes(parsed.protocol)) {
+          message("L'adresse doit commencer par HTTP ou HTTPS.");
+          return;
+        }
+      } catch {
+        message("L'adresse fournie n'est pas valide.");
+        return;
+      }
+
+      cleanPlayer();
+      loadButton.disabled = true;
+      message("Chargement du flux HLS...");
+
+      const finishLoading = () => {
+        loadButton.disabled = false;
+      };
+
+      if (window.Hls && Hls.isSupported()) {
+        hls = new Hls({
+          capLevelToPlayerSize: false,
+          startLevel: -1
+        });
+
+        hls.loadSource(url);
+        hls.attachMedia(video);
+
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          setupQualities();
+          finishLoading();
+        });
+
+        hls.on(Hls.Events.ERROR, (event, data) => {
+          if (data.fatal) {
+            message(
+              "Erreur de lecture HLS. Vérifie l'URL, le réseau, " +
+              "les autorisations CORS et la compatibilité du flux."
+            );
+            finishLoading();
+          }
+        });
+      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+        // Safari et certains appareils Apple lisent HLS nativement.
+        video.src = url;
+        video.addEventListener("loadedmetadata", () => {
+          qualitySelect.disabled = true;
+          message(
+            "HLS natif détecté. Le choix manuel des résolutions " +
+            "n'est pas exposé par ce lecteur dans ce navigateur."
+          );
+          finishLoading();
+        }, { once: true });
+
+        video.addEventListener("error", () => {
+          message("Impossible de lire ce flux HLS natif.");
+          finishLoading();
+        }, { once: true });
+
+        video.load();
+      } else {
+        message("Ce navigateur ne prend pas en charge la lecture HLS.");
+        finishLoading();
+      }
+    }
+
+    qualitySelect.addEventListener("change", () => {
+      if (!hls) {
+        message(
+          "Le choix manuel des qualités nécessite un navigateur compatible avec HLS.js."
+        );
+        return;
+      }
+
+      const level = Number(qualitySelect.value);
+
+      if (level === -1) {
+        hls.currentLevel = -1;
+        message("Qualité automatique activée.");
+      } else if (Number.isInteger(level) && hls.levels[level]) {
+        hls.currentLevel = level;
+        const selected = hls.levels[level];
+
+        message(
+          "Qualité sélectionnée : " +
+          (selected.height ? `${selected.height}p` : `niveau ${level + 1}`) +
+          "."
+        );
+      }
+    });
+
+    loadButton.addEventListener("click", loadStream);
+  </script>
+</body>
+</html>
