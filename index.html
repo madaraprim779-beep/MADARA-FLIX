@@ -1,0 +1,385 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090909">
+<meta name="description" content="MADARA FLIX : films, séries, animés et créations originales.">
+<title>MADARA FLIX — Ton univers. Sans limites.</title>
+
+<style>
+:root {
+  --bg: #090909;
+  --surface: #171717;
+  --red: #e50914;
+  --text: #ffffff;
+  --muted: #b5b5b5;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--text);
+  background: var(--bg);
+  font-family: Arial, Helvetica, sans-serif;
+}
+button, input { font: inherit; }
+button { cursor: pointer; }
+header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 17px 5%;
+  background: #090909f2;
+  border-bottom: 1px solid #292929;
+}
+.brand {
+  font-size: clamp(20px, 3vw, 29px);
+  font-weight: 900;
+  letter-spacing: -1px;
+  white-space: nowrap;
+}
+.brand span { color: var(--red); }
+nav {
+  display: flex;
+  gap: 18px;
+  flex: 1;
+  align-items: center;
+}
+nav button {
+  border: 0;
+  background: transparent;
+  color: #ddd;
+}
+nav button:hover { color: var(--red); }
+.search {
+  width: min(250px, 35vw);
+  padding: 10px 12px;
+  border: 1px solid #444;
+  border-radius: 5px;
+  background: #161616;
+  color: white;
+}
+.hero {
+  min-height: 440px;
+  padding: 80px 6% 45px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse at 80% 25%, #7a101a77, transparent 45%),
+    linear-gradient(90deg, #090909 12%, #090909df 50%, #290b10a6),
+    linear-gradient(135deg, #321116, #090909 65%);
+}
+.eyebrow {
+  color: #ff858a;
+  font-size: 12px;
+  letter-spacing: 4px;
+  font-weight: bold;
+}
+.hero h1 {
+  margin: 15px 0 10px;
+  max-width: 750px;
+  font-size: clamp(35px, 7vw, 68px);
+  line-height: 1.02;
+}
+.hero h1 span { color: var(--red); }
+.hero p {
+  max-width: 560px;
+  line-height: 1.7;
+  color: #ddd;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+.primary, .secondary {
+  padding: 13px 20px;
+  border-radius: 5px;
+  border: 0;
+  font-weight: bold;
+}
+.primary { background: var(--red); color: white; }
+.secondary { background: #ffffffdf; color: #111; }
+section.catalog { padding: 10px 5% 35px; }
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+h2 { font-size: clamp(19px, 3vw, 25px); }
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.chip {
+  background: #1b1b1b;
+  color: white;
+  border: 1px solid #383838;
+  border-radius: 20px;
+  padding: 9px 15px;
+}
+.chip.active, .chip:hover {
+  background: var(--red);
+  border-color: var(--red);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 15px;
+}
+.card {
+  min-width: 0;
+  overflow: hidden;
+  background: var(--surface);
+  border-radius: 7px;
+  border: 1px solid #282828;
+  transition: transform .2s, border-color .2s;
+}
+.card:hover { transform: translateY(-4px); border-color: #777; }
+.poster {
+  aspect-ratio: 3 / 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 14px;
+  background: linear-gradient(145deg, #4c111a, #211016 55%, #101010);
+}
+.poster .symbol { font-size: clamp(30px, 4vw, 55px); }
+.poster small { color: #ffd1d3; letter-spacing: 2px; }
+.card-content { padding: 12px; }
+.card h3 { font-size: 15px; margin: 0 0 8px; }
+.meta { font-size: 12px; color: var(--muted); }
+.card button {
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px;
+  background: #292929;
+  color: white;
+  border: 1px solid #454545;
+  border-radius: 4px;
+}
+.card button:hover { background: var(--red); }
+.empty { grid-column: 1/-1; color: var(--muted); }
+.notice {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+  padding: 20px 5%;
+}
+footer {
+  padding: 25px 5%;
+  color: var(--muted);
+  background: #111;
+  border-top: 1px solid #282828;
+  font-size: 13px;
+}
+#player {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  padding: 20px;
+  background: #000f;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+#player video { width: min(100%, 1000px); max-height: 72vh; }
+#player h2 { width: min(100%, 1000px); }
+#player button { margin-bottom: 15px; }
+@media(max-width: 950px) {
+  .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  header { flex-wrap: wrap; gap: 12px; }
+  nav { order: 3; width: 100%; overflow-x: auto; flex-basis: 100%; }
+  .search { margin-left: auto; }
+}
+@media(max-width: 560px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .hero { min-height: 370px; padding-top: 55px; }
+  .hero p { font-size: 14px; }
+  header { padding: 14px 4%; }
+  section.catalog { padding-left: 4%; padding-right: 4%; }
+  .poster { padding: 10px; }
+  .card-content { padding: 9px; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="brand">MADARA <span>FLIX</span></div>
+  <nav>
+    <button onclick="filterCategory('Tout')">Accueil</button>
+    <button onclick="filterCategory('Animés')">Animés</button>
+    <button onclick="filterCategory('Films')">Films</button>
+    <button onclick="filterCategory('Séries')">Séries</button>
+    <button onclick="filterCategory('Favoris')">Favoris ♥</button>
+  </nav>
+  <input class="search" id="search" placeholder="Rechercher..."
+    aria-label="Rechercher dans le catalogue">
+</header>
+
+<main>
+  <section class="hero">
+    <div class="eyebrow">BIENVENUE DANS TON UNIVERS</div>
+    <h1>TON UNIVERS.<br><span>SANS LIMITES.</span></h1>
+    <p>Découvre des films, des séries, des animés et des créations originales sur MADARA FLIX.</p>
+    <div class="actions">
+      <button class="primary" onclick="document.getElementById('catalogue').scrollIntoView({behavior:'smooth'})">▶ Explorer</button>
+      <button class="secondary" onclick="filterCategory('Animés')">Découvrir les animés</button>
+    </div>
+  </section>
+
+  <section class="catalog" id="catalogue">
+    <div class="section-head">
+      <h2 id="catalogTitle">À découvrir</h2>
+    </div>
+    <div class="categories" id="categories"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <p class="notice">
+    MADARA FLIX est une plateforme en développement. Les titres affichés
+    sont des exemples de catalogue et ne représentent pas des épisodes
+    disponibles. La diffusion de films, séries et animés doit être autorisée
+    par les ayants droit ou provenir de sources légalement accessibles.
+  </p>
+</main>
+
+<div id="player">
+  <button class="primary" onclick="closePlayer()">← Retour au catalogue</button>
+  <video id="video" controls playsinline></video>
+  <h2 id="playingTitle"></h2>
+</div>
+
+<footer>
+  <strong>MADARA <span style="color:#e50914">FLIX</span></strong><br><br>
+  TON UNIVERS. SANS LIMITES.<br><br>
+  © MADARA FLIX — Catalogue à compléter avec des contenus autorisés.
+</footer>
+
+<script>
+const categories = ["Tout", "Animés", "Films", "Séries", "Originals"];
+
+const items = [
+  {id:1,title:"Univers Ninja",category:"Animés",symbol:"忍",info:"Animation · Action"},
+  {id:2,title:"Légende Cosmique",category:"Animés",symbol:"宇",info:"Animation · Fantastique"},
+  {id:3,title:"Le Grand Voyage",category:"Films",symbol:"旅",info:"Film · Aventure"},
+  {id:4,title:"Chroniques du Futur",category:"Séries",symbol:"未来",info:"Série · Science-fiction"},
+  {id:5,title:"MADARA ORIGINALS",category:"Originals",symbol:"MF",info:"Création originale"}
+];
+
+let currentCategory = "Tout";
+let favorites = JSON.parse(localStorage.getItem("madaraFlixFavorites") || "[]");
+
+const categoryBox = document.getElementById("categories");
+
+categories.forEach(category => {
+  const button = document.createElement("button");
+  button.className = "chip" + (category === "Tout" ? " active" : "");
+  button.textContent = category;
+  button.onclick = () => filterCategory(category);
+  categoryBox.appendChild(button);
+});
+
+function filterCategory(category) {
+  currentCategory = category;
+  document.querySelectorAll(".chip").forEach(button => {
+    button.classList.toggle("active", button.textContent === category);
+  });
+  render();
+}
+
+function render() {
+  const query = document.getElementById("search").value.trim().toLowerCase();
+  const results = items.filter(item => {
+    const categoryMatch =
+      currentCategory === "Tout" ||
+      (currentCategory === "Favoris"
+        ? favorites.includes(item.id)
+        : item.category === currentCategory);
+    return categoryMatch &&
+      (item.title.toLowerCase().includes(query) ||
+       item.category.toLowerCase().includes(query));
+  });
+
+  document.getElementById("catalogTitle").textContent =
+    currentCategory === "Tout" ? "À découvrir" : currentCategory;
+
+  const grid = document.getElementById("grid");
+  grid.replaceChildren();
+
+  if (!results.length) {
+    const empty = document.createElement("p");
+    empty.className = "empty";
+    empty.textContent = "Aucun titre trouvé dans cette catégorie.";
+    grid.appendChild(empty);
+    return;
+  }
+
+  results.forEach(item => {
+    const card = document.createElement("article");
+    card.className = "card";
+
+    const poster = document.createElement("div");
+    poster.className = "poster";
+    const symbol = document.createElement("div");
+    symbol.className = "symbol";
+    symbol.textContent = item.symbol;
+    const label = document.createElement("small");
+    label.textContent = "MADARA FLIX";
+    poster.append(symbol, label);
+
+    const content = document.createElement("div");
+    content.className = "card-content";
+    const title = document.createElement("h3");
+    title.textContent = item.title;
+    const info = document.createElement("div");
+    info.className = "meta";
+    info.textContent = item.info;
+    const favorite = document.createElement("button");
+    favorite.textContent = favorites.includes(item.id)
+      ? "♥ Retirer des favoris" : "♡ Ajouter aux favoris";
+    favorite.onclick = () => toggleFavorite(item.id);
+    content.append(title, info, favorite);
+
+    card.append(poster, content);
+    grid.appendChild(card);
+  });
+}
+
+function toggleFavorite(id) {
+  favorites = favorites.includes(id)
+    ? favorites.filter(value => value !== id)
+    : [...favorites, id];
+  localStorage.setItem("madaraFlixFavorites", JSON.stringify(favorites));
+  render();
+}
+
+function closePlayer() {
+  const player = document.getElementById("player");
+  const video = document.getElementById("video");
+  video.pause();
+  video.removeAttribute("src");
+  video.load();
+  player.style.display = "none";
+}
+
+function goHome() {
+  filterCategory("Tout");
+}
+
+document.getElementById("search").addEventListener("input", render);
+render();
+</script>
+</body>
+</html>
