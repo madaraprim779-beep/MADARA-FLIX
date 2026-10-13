@@ -1,0 +1,476 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#e50914">
+  <title>MADARA FLIX — Lecteur 8K</title>
+
+  <style>
+    :root {
+      --red: #e50914;
+      --bg: #080808;
+      --panel: #171717;
+      --text: #fff;
+      --muted: #aaa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      padding: 18px 5%;
+      border-bottom: 1px solid #292929;
+      background: #101010;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: 900;
+      text-decoration: none;
+      color: white;
+    }
+
+    .brand span {
+      color: var(--red);
+    }
+
+    .tag {
+      font-size: 11px;
+      color: #ff525a;
+      border: 1px solid #722027;
+      border-radius: 20px;
+      padding: 7px 10px;
+    }
+
+    main {
+      max-width: 1050px;
+      padding: 25px 16px 50px;
+      margin: auto;
+    }
+
+    h1 {
+      font-size: clamp(24px, 5vw, 38px);
+      margin-bottom: 8px;
+    }
+
+    .description {
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 22px;
+    }
+
+    .video-frame {
+      background: #000;
+      border: 1px solid #303030;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px #000;
+    }
+
+    video {
+      display: block;
+      width: 100%;
+      max-height: 70vh;
+      aspect-ratio: 16 / 9;
+      background: #000;
+    }
+
+    .controls {
+      margin-top: 20px;
+      background: var(--panel);
+      border: 1px solid #303030;
+      border-radius: 10px;
+      padding: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 9px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    select, input[type="url"] {
+      width: 100%;
+      min-width: 0;
+      padding: 13px;
+      border: 1px solid #444;
+      border-radius: 7px;
+      background: #090909;
+      color: white;
+      outline: none;
+    }
+
+    select:focus, input:focus {
+      border-color: var(--red);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .button {
+      padding: 13px 17px;
+      background: var(--red);
+      color: white;
+      border: 0;
+      border-radius: 7px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background: #ff2933;
+    }
+
+    .button.secondary {
+      background: #292929;
+      border: 1px solid #444;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .status {
+      margin-top: 14px;
+      padding: 13px;
+      border-radius: 7px;
+      background: #222;
+      color: #ddd;
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .status.error {
+      border: 1px solid #77272d;
+    }
+
+    .status.success {
+      border: 1px solid #285d3c;
+    }
+
+    .quality-info {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .quality-card {
+      background: var(--panel);
+      border: 1px solid #303030;
+      padding: 14px 8px;
+      text-align: center;
+      border-radius: 8px;
+    }
+
+    .quality-card strong {
+      display: block;
+      color: #ff404a;
+      margin-bottom: 5px;
+    }
+
+    .quality-card span {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .note {
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    footer {
+      border-top: 1px solid #292929;
+      padding: 22px 15px;
+      color: #888;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 15px 4%;
+      }
+
+      .brand {
+        font-size: 18px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .quality-info {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .controls {
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a class="brand" href="./index.html">
+      MADARA <span>FLIX</span>
+    </a>
+    <span class="tag">LECTEUR VIDÉO</span>
+  </header>
+
+  <main>
+    <h1>Ton cinéma, ta qualité.</h1>
+    <p class="description">
+      Choisis une source vidéo autorisée et profite du lecteur
+      MADARA FLIX sur ton téléphone ou ton ordinateur.
+    </p>
+
+    <div class="video-frame">
+      <video id="video" controls playsinline preload="metadata">
+        Ton navigateur ne prend pas en charge la vidéo HTML5.
+      </video>
+    </div>
+
+    <section class="controls">
+      <div class="field">
+        <label for="source">Adresse de la vidéo</label>
+        <input
+          type="url"
+          id="source"
+          placeholder="https://exemple.com/ma-video.mp4"
+          autocomplete="url"
+        >
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label for="quality">Qualité souhaitée</label>
+          <select id="quality">
+            <option value="auto">Automatique</option>
+            <option value="360">360p</option>
+            <option value="480">480p</option>
+            <option value="720">720p HD</option>
+            <option value="1080">1080p Full HD</option>
+            <option value="1440">1440p QHD</option>
+            <option value="2160">4K UHD</option>
+            <option value="4320">8K UHD</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="bandwidth">Connexion</label>
+          <select id="bandwidth">
+            <option value="auto">Je laisse le lecteur choisir</option>
+            <option value="slow">Connexion limitée</option>
+            <option value="fast">Connexion rapide</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="button-row">
+        <button class="button" id="load">Charger la vidéo</button>
+        <button class="button secondary" id="fullscreen">
+          Plein écran
+        </button>
+      </div>
+
+      <div class="status" id="status" role="status" aria-live="polite">
+        En attente d'une source vidéo.
+      </div>
+    </section>
+
+    <section class="quality-info">
+      <div class="quality-card">
+        <strong>360p</strong>
+        <span>Connexion limitée</span>
+      </div>
+      <div class="quality-card">
+        <strong>720p</strong>
+        <span>HD</span>
+      </div>
+      <div class="quality-card">
+        <strong>1080p</strong>
+        <span>Full HD</span>
+      </div>
+      <div class="quality-card">
+        <strong>4K / 8K</strong>
+        <span>Source haute résolution</span>
+      </div>
+    </section>
+
+    <p class="note">
+      Important : sélectionner 8K ne transforme pas une vidéo en 8K.
+      La qualité réelle dépend du fichier source. Pour passer d'une
+      résolution à une autre sans recharger la vidéo, il faut un flux
+      adaptatif proposant plusieurs qualités, par exemple HLS ou DASH,
+      et un lecteur compatible. Ce prototype charge une source vidéo
+      directe ; le menu de qualité indique le choix demandé, mais ne
+      force pas la résolution du fichier.
+    </p>
+  </main>
+
+  <footer>
+    MADARA FLIX · TON UNIVERS. SANS LIMITES.
+  </footer>
+
+  <script>
+    const video = document.getElementById("video");
+    const source = document.getElementById("source");
+    const quality = document.getElementById("quality");
+    const bandwidth = document.getElementById("bandwidth");
+    const status = document.getElementById("status");
+
+    function showStatus(message, type = "") {
+      status.textContent = message;
+      status.className = "status" + (type ? " " + type : "");
+    }
+
+    function validVideoUrl(value) {
+      try {
+        const url = new URL(value);
+        return url.protocol === "https:" || url.protocol === "http:";
+      } catch {
+        return false;
+      }
+    }
+
+    document.getElementById("load").addEventListener("click", () => {
+      const url = source.value.trim();
+
+      if (!validVideoUrl(url)) {
+        showStatus(
+          "Entre une adresse HTTP ou HTTPS valide vers une vidéo autorisée.",
+          "error"
+        );
+        return;
+      }
+
+      video.pause();
+      video.src = url;
+      video.load();
+
+      showStatus(
+        "Chargement de la vidéo. Qualité demandée : " +
+        quality.options[quality.selectedIndex].text +
+        ". La résolution réelle dépend de la source.",
+        ""
+      );
+    });
+
+    video.addEventListener("loadedmetadata", () => {
+      const height = video.videoHeight;
+      const width = video.videoWidth;
+
+      if (!height || !width) {
+        showStatus(
+          "Vidéo détectée, mais ses dimensions ne sont pas disponibles.",
+          "error"
+        );
+        return;
+      }
+
+      let resolution = "résolution personnalisée";
+
+      if (height <= 360) resolution = "360p ou moins";
+      else if (height <= 480) resolution = "480p";
+      else if (height <= 720) resolution = "720p HD";
+      else if (height <= 1080) resolution = "1080p Full HD";
+      else if (height <= 1440) resolution = "1440p QHD";
+      else if (height <= 2160) resolution = "4K UHD";
+      else if (height <= 4320) resolution = "8K UHD";
+
+      showStatus(
+        "Vidéo chargée : " + width + " × " + height +
+        " pixels (" + resolution + ").",
+        "success"
+      );
+    });
+
+    video.addEventListener("error", () => {
+      showStatus(
+        "Lecture impossible. Vérifie l'adresse, le format vidéo, " +
+        "les autorisations du serveur et la connexion.",
+        "error"
+      );
+    });
+
+    quality.addEventListener("change", () => {
+      showStatus(
+        "Qualité demandée : " +
+        quality.options[quality.selectedIndex].text +
+        ". Pour appliquer cette qualité, la source doit proposer " +
+        "une version correspondante ou un flux adaptatif compatible."
+      );
+    });
+
+    bandwidth.addEventListener("change", () => {
+      if (bandwidth.value === "slow") {
+        showStatus(
+          "Conseil : choisis une source 360p ou 480p pour limiter " +
+          "la consommation de données. Ce réglage ne réduit pas " +
+          "automatiquement la résolution de la vidéo."
+        );
+      } else if (bandwidth.value === "fast") {
+        showStatus(
+          "Connexion rapide sélectionnée. Pour lire du 4K ou 8K, " +
+          "il faut une source correspondante et une connexion suffisante."
+        );
+      } else {
+        showStatus(
+          "Mode automatique sélectionné. Ce prototype ne change pas " +
+          "automatiquement la qualité d'une vidéo directe."
+        );
+      }
+    });
+
+    document.getElementById("fullscreen").addEventListener("click", async () => {
+      try {
+        if (video.requestFullscreen) {
+          await video.requestFullscreen();
+        } else if (video.webkitEnterFullscreen) {
+          video.webkitEnterFullscreen();
+        } else {
+          showStatus(
+            "Le plein écran n'est pas disponible dans ce navigateur.",
+            "error"
+          );
+        }
+      } catch {
+        showStatus(
+          "Impossible d'activer le plein écran.",
+          "error"
+        );
+      }
+    });
+  </script>
+</body>
+</html>
