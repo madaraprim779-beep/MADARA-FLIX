@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#e50914">
+  <title>Catalogue — MADARA FLIX</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #090909;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      padding: 20px;
+      background: #111;
+      border-bottom: 2px solid #e50914;
+    }
+
+    .logo {
+      color: #e50914;
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    header p {
+      color: #aaa;
+      margin-bottom: 0;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .notice {
+      padding: 14px;
+      background: #191919;
+      border-left: 4px solid #e50914;
+      border-radius: 8px;
+      color: #ccc;
+      line-height: 1.5;
+    }
+
+    .card {
+      background: #171717;
+      padding: 18px;
+      margin-top: 18px;
+      border-radius: 12px;
+      border: 1px solid #292929;
+    }
+
+    .tag {
+      color: #e50914;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin-bottom: 8px;
+    }
+
+    .description {
+      color: #bbb;
+      line-height: 1.5;
+    }
+
+    label {
+      display: block;
+      margin: 14px 0 7px;
+      color: #ddd;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 13px;
+      background: #090909;
+      color: #fff;
+      border: 1px solid #444;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    button, .link {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      margin-top: 12px;
+      background: #e50914;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-weight: bold;
+      border: 0;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .secondary {
+      background: #292929;
+    }
+
+    .back {
+      display: inline-block;
+      color: #fff;
+      margin-bottom: 20px;
+      text-decoration: none;
+    }
+
+    footer {
+      padding: 25px;
+      text-align: center;
+      color: #777;
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">MADARA FLIX</div>
+    <p>TON UNIVERS. SANS LIMITES.</p>
+  </header>
+
+  <main>
+    <a class="back" href="./index.html">← Retour à l'accueil</a>
+
+    <h1>Le catalogue</h1>
+
+    <div class="notice">
+      <strong>Version de démarrage</strong><br>
+      Ajoute ici les liens directs vers tes vidéos autorisées.
+      Un lien de page web ordinaire ne fonctionne pas forcément
+      comme un lien vidéo.
+    </div>
+
+    <section class="card">
+      <span class="tag">Lecteur vidéo</span>
+      <h2>Lire une vidéo</h2>
+      <p class="description">
+        Colle l'adresse directe d'un flux HLS (.m3u8) autorisé.
+        Le lecteur pourra proposer les qualités disponibles dans ce flux.
+      </p>
+
+      <form id="videoForm">
+        <label for="title">Titre du film ou de l'épisode</label>
+        <input id="title" placeholder="Ex. Mon épisode pilote" required>
+
+        <label for="url">Adresse du flux vidéo HLS (.m3u8)</label>
+        <input
+          id="url"
+          type="url"
+          placeholder="https://exemple.com/video.m3u8"
+          required
+        >
+
+        <button type="submit">▶ Ouvrir le lecteur</button>
+      </form>
+
+      <a class="link secondary" href="./hls-player.html">
+        Ouvrir le lecteur HLS directement
+      </a>
+    </section>
+
+    <section class="card">
+      <span class="tag">À venir</span>
+      <h2>Films, séries et animés</h2>
+      <p class="description">
+        Cette section sera enrichie avec les contenus originaux
+        de MADARA FLIX et les œuvres que nous sommes autorisés à diffuser.
+        Aucun film n'est fourni automatiquement par cette page.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    MADARA FLIX © 2026 — Diffusons les contenus légalement.
+  </footer>
+
+  <script>
+    document.getElementById("videoForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const title = document.getElementById("title").value.trim();
+      const url = document.getElementById("url").value.trim();
+
+      try {
+        const parsed = new URL(url);
+
+        if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+          alert("Utilise une adresse HTTP ou HTTPS valide.");
+          return;
+        }
+
+        if (!parsed.pathname.toLowerCase().endsWith(".m3u8")) {
+          alert("Cette version attend une adresse de flux HLS terminant par .m3u8.");
+          return;
+        }
+
+        const destination = new URL("./hls-player.html", window.location.href);
+        destination.searchParams.set("title", title);
+        destination.searchParams.set("src", url);
+
+        window.location.href = destination.href;
+      } catch (error) {
+        alert("Vérifie l'adresse vidéo puis réessaie.");
+      }
+    });
+  </script>
+</body>
+</html>
