@@ -1,168 +1,754 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#090909">
+<meta name="theme-color" content="#080808">
 <title>MADARA FLIX</title>
+
 <style>
-:root{--red:#e50914;--bg:#090909;--panel:#181818}
+:root{
+  --red:#e50914;
+  --bg:#080808;
+  --panel:#181818;
+  --muted:#b3b3b3;
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:white;font-family:Arial,sans-serif}
-header{position:sticky;top:0;z-index:10;background:#090909ed;padding:15px 5%;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
-.logo{font-size:25px;font-weight:900;color:var(--red);white-space:nowrap}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:white;
+  font-family:Arial,Helvetica,sans-serif;
+}
+button,input{
+  font:inherit;
+}
+button{
+  cursor:pointer;border:0;border-radius:5px;
+  padding:11px 16px;font-weight:bold;
+}
+button:active{transform:scale(.98)}
+.primary{background:var(--red);color:white}
+.secondary{background:#333;color:white}
+header{
+  position:sticky;top:0;z-index:20;
+  display:flex;align-items:center;gap:15px;
+  flex-wrap:wrap;padding:14px 4%;
+  background:linear-gradient(#080808 75%,#080808e0);
+}
+.logo{
+  font-size:24px;font-weight:1000;
+  letter-spacing:-1px;color:var(--red);
+  white-space:nowrap;
+}
 .logo span{color:white}
-nav{display:flex;gap:16px;flex-wrap:wrap}
-nav a{color:#ddd;text-decoration:none;font-size:14px}
-nav a:hover{color:white}
-.search{margin-left:auto;max-width:220px;width:100%;padding:10px;background:#222;color:white;border:1px solid #444;border-radius:6px}
-.hero{min-height:430px;padding:70px 6% 45px;display:flex;align-items:end;background:linear-gradient(90deg,#090909 5%,#090909dd 42%,#09090920),linear-gradient(0deg,#090909,#09090900),url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=1600&q=80') center/cover}
-.hero-content{max-width:600px}
-.tag{color:#ff5050;font-weight:bold;letter-spacing:3px}
-h1{font-size:clamp(32px,6vw,60px);margin:12px 0}
-.hero p{color:#ddd;line-height:1.6}
-button{cursor:pointer}
-.btn{padding:12px 20px;border:0;border-radius:5px;font-weight:bold;margin:8px 8px 0 0}
-.play{background:white;color:#111}
-.info{background:#444;color:white}
-section.catalog{padding:20px 5%}
-h2{font-size:21px}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:16px}
-.card{background:var(--panel);border-radius:8px;overflow:hidden;cursor:pointer;transition:.2s}
+nav{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+nav button{
+  background:transparent;color:#ddd;padding:7px 0;
+}
+nav button:hover{color:white}
+.search{
+  display:flex;gap:6px;margin-left:auto;
+  min-width:160px;
+}
+input{
+  background:#202020;color:white;border:1px solid #555;
+  border-radius:5px;padding:11px;min-width:0;
+}
+.search input{width:100%;max-width:230px}
+main{max-width:1600px;margin:auto}
+.hero{
+  min-height:440px;position:relative;
+  display:flex;align-items:flex-end;
+  padding:45px 4% 65px;
+  background:
+    linear-gradient(0deg,#080808 0%,transparent 75%),
+    linear-gradient(90deg,#080808e8 0%,#08080891 45%,transparent 100%),
+    radial-gradient(ellipse at 75% 25%,#6b111a,#191016 48%,#080808);
+  background-size:cover;background-position:center;
+}
+.hero-content{max-width:620px;position:relative;z-index:1}
+.kicker{
+  font-size:12px;letter-spacing:4px;
+  font-weight:bold;color:#ff686e;
+}
+.hero h1{
+  font-size:clamp(34px,7vw,68px);
+  line-height:1.02;margin:12px 0;
+  text-shadow:0 3px 15px #000;
+}
+.hero p{line-height:1.6;color:#eee;max-width:540px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.hero-actions button{font-size:15px}
+.status{
+  margin:12px 4%;padding:11px;
+  background:#191919;border-radius:6px;
+  color:#ffd36a;font-size:13px;line-height:1.5;
+  white-space:pre-wrap;
+}
+#settings{
+  display:none;margin:15px 4%;padding:17px;
+  border:1px solid #333;background:#181818;border-radius:8px;
+}
+#settings h2{margin-top:0}
+#settings input{width:100%;margin:8px 0}
+.small{font-size:12px;color:var(--muted);line-height:1.6}
+.row{margin:25px 0 30px}
+.row-heading{
+  display:flex;align-items:center;gap:12px;
+  padding:0 4%;margin-bottom:12px;
+}
+.row-heading h2{font-size:20px;margin:0}
+.row-heading span{font-size:12px;color:var(--muted)}
+.rail{
+  display:flex;gap:10px;overflow-x:auto;
+  padding:3px 4% 14px;
+  scroll-snap-type:x mandatory;
+  scrollbar-width:thin;scrollbar-color:#555 #111;
+}
+.card{
+  flex:0 0 145px;scroll-snap-align:start;
+  background:var(--panel);border-radius:5px;
+  overflow:hidden;cursor:pointer;
+  transition:transform .18s;
+}
 .card:hover{transform:scale(1.035)}
-.card img{display:block;width:100%;aspect-ratio:2/3;object-fit:cover;background:#222}
-.card div{padding:10px}
-.card h3{font-size:15px;margin:0 0 7px}
-.card p{font-size:12px;color:#bbb;margin:0}
-.player-box{display:none;padding:20px 5%;background:#111}
-.player-box video{display:block;width:100%;max-height:70vh;background:black}
-.player-box iframe{width:100%;aspect-ratio:16/9;border:0;background:#000}
-.player-box .close{margin:10px 0;padding:10px;background:#333;color:white;border:0;border-radius:5px}
-#status{color:#ccc;font-size:14px}
-footer{padding:30px 5%;color:#999;background:#111;font-size:13px;line-height:1.7}
-@media(max-width:600px){header{gap:12px}.search{margin-left:0;max-width:none}.hero{min-height:360px;padding-top:45px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.card img,.poster-placeholder{
+  width:100%;aspect-ratio:2/3;display:block;
+  object-fit:cover;background:#222;
+}
+.poster-placeholder{
+  display:grid;place-items:center;text-align:center;
+  padding:12px;color:#ff555d;font-weight:bold;
+  background:linear-gradient(145deg,#321015,#171717);
+}
+.card-info{padding:9px}
+.card h3{font-size:13px;line-height:1.35;margin:0 0 6px}
+.meta{font-size:11px;color:#aaa}
+#searchResults{display:none}
+#details{
+  display:none;margin:20px 4%;padding:18px;
+  background:#181818;border-radius:9px;
+  overflow:hidden;
+}
+#details img{
+  width:115px;max-width:35%;float:left;
+  margin:0 15px 10px 0;border-radius:5px;
+}
+#details:after{content:"";display:block;clear:both}
+.overview{font-size:14px;line-height:1.65;color:#ddd}
+.pill{
+  display:inline-block;background:#333;padding:5px 8px;
+  border-radius:20px;font-size:11px;margin:3px;
+}
+.season{border-top:1px solid #393939;padding:12px 0}
+.season button{width:100%;text-align:left;background:#292929;color:white}
+.episodes{padding:0 8px}
+.episode{border-bottom:1px solid #393939;padding:12px 0}
+.episode strong{font-size:13px}
+.empty{padding:20px;color:#aaa}
+footer{
+  padding:30px 5%;text-align:center;
+  color:#888;font-size:12px;line-height:1.8;
+  border-top:1px solid #222;margin-top:30px;
+}
+a{color:#ff777e}
+@media(min-width:700px){
+  .card{flex-basis:180px}
+  .hero{min-height:520px}
+}
+@media(max-width:520px){
+  header{gap:10px;padding:12px 4%}
+  .logo{font-size:21px}
+  nav{order:3;width:100%;justify-content:space-between}
+  nav button{font-size:12px}
+  .search{min-width:120px}
+  .search input{width:100%}
+  .hero{min-height:390px;padding-bottom:50px}
+  .card{flex-basis:130px}
+}
 </style>
 </head>
+
 <body>
+
 <header>
   <div class="logo">MADARA <span>FLIX</span></div>
+
   <nav>
-    <a href="#accueil">Accueil</a>
-    <a href="#films">Films</a>
-    <a href="#series">Séries</a>
-    <a href="#anime">Anime</a>
+    <button onclick="home()">Accueil</button>
+    <button onclick="loadCategory('movie')">Films</button>
+    <button onclick="loadCategory('tv')">Séries</button>
+    <button onclick="loadAnime()">Animes</button>
   </nav>
-  <input class="search" id="search" placeholder="Rechercher un titre..." aria-label="Rechercher">
+
+  <div class="search">
+    <input id="searchInput" placeholder="Rechercher..." aria-label="Rechercher">
+    <button class="primary" onclick="searchTitles()">OK</button>
+  </div>
+
+  <button class="secondary" onclick="showSettings()">API</button>
 </header>
 
 <main>
-<section class="hero" id="accueil">
-  <div class="hero-content">
-    <div class="tag">MADARA FLIX ORIGINAL</div>
-    <h1>TON UNIVERS.<br>SANS LIMITES.</h1>
-    <p>Découvre des films, des séries et des animations. Explore le catalogue et lance les contenus disponibles légalement.</p>
-    <button class="btn play" onclick="showFeatured()">▶ Découvrir</button>
-    <button class="btn info" onclick="document.getElementById('films').scrollIntoView({behavior:'smooth'})">ⓘ Explorer le catalogue</button>
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <div class="kicker">MADARA FLIX ORIGINAL</div>
+      <h1 id="heroTitle">TON UNIVERS.<br>SANS LIMITES.</h1>
+      <p id="heroOverview">
+        Films, séries et animes : découvre ton prochain univers.
+      </p>
+      <div class="hero-actions">
+        <button class="primary" onclick="playFeatured()">▶ Découvrir</button>
+        <button class="secondary" onclick="showFeaturedDetails()">ⓘ Plus d'informations</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="settings">
+    <h2>Connecter l'API TMDB</h2>
+    <p class="small">
+      Colle ici ta clé API v3 ou ton jeton v4.
+      La clé n'est pas enregistrée dans le navigateur.
+    </p>
+    <input id="apiKey" type="password" autocomplete="off"
+           placeholder="Clé API TMDB">
+    <div class="hero-actions">
+      <button class="primary" onclick="connectAPI()">Connecter</button>
+      <button class="secondary" onclick="toggleKey()">Afficher / masquer</button>
+      <button class="secondary" onclick="hideSettings()">Fermer</button>
+    </div>
+  </section>
+
+  <div id="status" class="status">
+    Connecte ta clé API TMDB pour charger le catalogue.
   </div>
-</section>
 
-<div class="player-box" id="playerBox">
-  <h2 id="playerTitle">Lecture</h2>
-  <video id="video" controls playsinline>
-    Ton navigateur ne prend pas en charge la vidéo.
-  </video>
-  <p id="status">Sélectionne un contenu pour commencer.</p>
-  <button class="close" onclick="closePlayer()">Fermer le lecteur</button>
-</div>
+  <section id="searchResults">
+    <div class="row-heading"><h2>Résultats de recherche</h2></div>
+    <div id="searchRail" class="rail"></div>
+  </section>
 
-<section class="catalog" id="films">
-  <h2>🎬 Films</h2>
-  <div class="cards" id="filmCards"></div>
-</section>
+  <section class="row">
+    <div class="row-heading"><h2>🔥 Films populaires</h2><span>À découvrir</span></div>
+    <div id="movies" class="rail"><div class="empty">Connecte l'API pour afficher les films.</div></div>
+  </section>
 
-<section class="catalog" id="series">
-  <h2>📺 Séries</h2>
-  <div class="cards" id="seriesCards"></div>
-</section>
+  <section class="row">
+    <div class="row-heading"><h2>📺 Séries populaires</h2><span>À regarder</span></div>
+    <div id="series" class="rail"><div class="empty">Les séries apparaîtront ici.</div></div>
+  </section>
 
-<section class="catalog" id="anime">
-  <h2>🔥 Animations et anime</h2>
-  <div class="cards" id="animeCards"></div>
-</section>
+  <section class="row">
+    <div class="row-heading"><h2>🍥 Animes japonais</h2><span>Animation</span></div>
+    <div id="anime" class="rail"><div class="empty">Les animes apparaîtront ici.</div></div>
+  </section>
+
+  <section id="details"></section>
+
+  <section class="row">
+    <div class="row-heading">
+      <h2 id="categoryTitle">Explorer le catalogue</h2>
+      <span id="resultCount"></span>
+    </div>
+    <div id="catalog" class="rail"></div>
+    <div style="text-align:center">
+      <button id="moreBtn" class="secondary" style="display:none" onclick="loadMore()">
+        Charger plus
+      </button>
+    </div>
+  </section>
 </main>
 
 <footer>
-  <strong>MADARA FLIX</strong><br>
-  Prototype indépendant de streaming.<br>
-  Les titres fictifs illustrent la présentation du catalogue.
-  N'ajoute que des vidéos que tu es autorisé à diffuser.
+  MADARA FLIX utilise l'API TMDB, mais n'est ni approuvé ni certifié par TMDB.
+  <br>Les affiches et informations viennent de TMDB. Cette API ne fournit pas les vidéos.
+  <br><a href="https://www.themoviedb.org/" target="_blank" rel="noopener noreferrer">The Movie Database</a>
 </footer>
 
 <script>
-const poster = (id) =>
-  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=500&q=80`;
+"use strict";
 
-const catalog = [
- {title:"Le Dernier Horizon",type:"film",year:"2025",desc:"Une aventure au-delà des étoiles.",image:"photo-1446776811953-b23d57bd21aa",url:""},
- {title:"Le Royaume Oublié",type:"film",year:"2024",desc:"Un royaume mystérieux.",image:"photo-1518709268805-4e9042af9f23",url:""},
- {title:"Mission Nocturne",type:"film",year:"2025",desc:"Une mission pleine de suspense.",image:"photo-1519608487953-e999c86e7455",url:""},
- {title:"Les Chroniques",type:"serie",year:"Saison 1",desc:"Une histoire en plusieurs épisodes.",image:"photo-1518837695005-2083093ee35b",url:""},
- {title:"La Cité Secrète",type:"serie",year:"Saison 1",desc:"Les secrets d'une cité.",image:"photo-1519608487953-e999c86e7455",url:""},
- {title:"Étoiles Ninja",type:"anime",year:"Animation",desc:"Une aventure animée originale.",image:"photo-1462331940025-496dfbfc7564",url:""},
- {title:"Voyage Cosmique",type:"anime",year:"Animation",desc:"Une exploration de l'univers.",image:"photo-1446776811953-b23d57bd21aa",url:""}
-];
+let credential = "";
+let authMode = "";
+let currentCategory = "movie";
+let currentQuery = "";
+let currentAnime = false;
+let currentPage = 1;
+let totalPages = 1;
+let featured = null;
+let featuredType = "movie";
+let requestId = 0;
 
-function render(items){
-  const groups={film:"filmCards",serie:"seriesCards",anime:"animeCards"};
-  Object.values(groups).forEach(id=>document.getElementById(id).innerHTML="");
-  items.forEach(item=>{
-    const card=document.createElement("article");
-    card.className="card";
-    const img=document.createElement("img");
-    img.src=poster(item.image);
-    img.alt=item.title;
-    img.loading="lazy";
-    const content=document.createElement("div");
-    const title=document.createElement("h3");
-    title.textContent=item.title;
-    const desc=document.createElement("p");
-    desc.textContent=item.year+" • "+item.desc;
-    content.append(title,desc);
-    card.append(img,content);
-    card.onclick=()=>openTitle(item);
-    document.getElementById(groups[item.type]).appendChild(card);
+const $ = id => document.getElementById(id);
+const language = "fr-FR";
+
+function setStatus(message) {
+  $("status").textContent = message;
+}
+
+function showSettings() {
+  $("settings").style.display = "block";
+  $("settings").scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+function hideSettings() {
+  $("settings").style.display = "none";
+}
+
+function toggleKey() {
+  const input = $("apiKey");
+  input.type = input.type === "password" ? "text" : "password";
+}
+
+function escapeHTML(value = "") {
+  return String(value).replace(/[&<>"']/g, c => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;",
+    '"':"&quot;", "'":"&#39;"
+  }[c]));
+}
+
+function imageURL(path, size = "w500") {
+  return path ? "https://image.tmdb.org/t/p/" + size + path : "";
+}
+
+async function api(path, params = {}) {
+  if (!credential) throw new Error("Connecte d'abord ton API TMDB.");
+
+  const url = new URL("https://api.themoviedb.org/3" + path);
+  url.searchParams.set("language", language);
+
+  if (authMode === "v3") {
+    url.searchParams.set("api_key", credential);
+  }
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      url.searchParams.set(key, String(value));
+    }
+  });
+
+  const headers = {accept:"application/json"};
+  if (authMode === "v4") {
+    headers.Authorization = "Bearer " + credential;
+  }
+
+  const response = await fetch(url, {headers});
+  let data = {};
+
+  try { data = await response.json(); } catch {}
+
+  if (!response.ok) {
+    throw new Error(data.status_message || "Erreur HTTP " + response.status);
+  }
+
+  return data;
+}
+
+async function connectAPI() {
+  const value = $("apiKey").value.trim();
+
+  if (!value) {
+    setStatus("Colle d'abord ta clé API.");
+    return;
+  }
+
+  credential = value;
+
+  // Une clé v3 ressemble généralement à une chaîne de 32 caractères.
+  // Un jeton v4 ressemble à un JWT séparé en trois parties par des points.
+  authMode = value.split(".").length === 3 ? "v4" : "v3";
+
+  setStatus("Vérification de la connexion...");
+  try {
+    await api("/configuration");
+    hideSettings();
+    setStatus("API connectée. Chargement du catalogue...");
+    await loadHomeCatalogue();
+  } catch (error) {
+    credential = "";
+    setStatus(
+      "Connexion impossible : " + error.message +
+      "\nVérifie la clé et ta connexion Internet."
+    );
+    showSettings();
+  }
+}
+
+async function loadHomeCatalogue() {
+  try {
+    const [movies, series, anime] = await Promise.all([
+      api("/movie/popular", {page:1}),
+      api("/tv/popular", {page:1}),
+      api("/discover/tv", {
+        with_origin_country:"JP",
+        with_genres:16,
+        sort_by:"popularity.desc",
+        page:1
+      })
+    ]);
+
+    renderRail("movies", movies.results, "movie");
+    renderRail("series", series.results, "tv");
+    renderRail("anime", anime.results, "tv");
+
+    const first = (movies.results || []).find(item => item.backdrop_path);
+    if (first) {
+      featured = first;
+      featuredType = "movie";
+      setHero(first, "movie");
+    }
+
+    setStatus("Catalogue chargé avec succès.");
+  } catch (error) {
+    setStatus("Erreur de chargement : " + error.message);
+  }
+}
+
+function setHero(item, type) {
+  featured = item;
+  featuredType = type;
+
+  const title = item.title || item.name || "MADARA FLIX";
+  $("heroTitle").textContent = title;
+  $("heroOverview").textContent =
+    item.overview || "Découvre ce titre dans le catalogue MADARA FLIX.";
+
+  if (item.backdrop_path) {
+    $("hero").style.backgroundImage =
+      'linear-gradient(0deg,#080808 0%,transparent 75%),' +
+      'linear-gradient(90deg,#080808e8 0%,#08080891 45%,transparent 100%),' +
+      'url("' + imageURL(item.backdrop_path, "original") + '")';
+  }
+}
+
+function renderRail(targetId, items, type) {
+  const rail = $(targetId);
+  rail.innerHTML = "";
+
+  if (!items || items.length === 0) {
+    rail.innerHTML = '<div class="empty">Aucun titre disponible.</div>';
+    return;
+  }
+
+  items.forEach(item => {
+    const itemType = item.media_type || type;
+    const title = item.title || item.name || "Titre inconnu";
+    const year = (item.release_date || item.first_air_date || "").slice(0,4);
+    const card = document.createElement("article");
+    card.className = "card";
+
+    card.innerHTML =
+      (item.poster_path
+        ? '<img loading="lazy" src="' + imageURL(item.poster_path) +
+          '" alt="Affiche de ' + escapeHTML(title) + '">'
+        : '<div class="poster-placeholder">MADARA FLIX</div>') +
+      '<div class="card-info"><h3>' + escapeHTML(title) + '</h3>' +
+      '<div class="meta">' +
+      (itemType === "movie" ? "Film" : "Série / anime") +
+      (year ? " · " + escapeHTML(year) : "") +
+      '</div></div>';
+
+    card.addEventListener("click", () => showDetails(item.id, itemType));
+    card.addEventListener("mouseenter", () => {
+      if (item.backdrop_path) setHero(item, itemType);
+    });
+    rail.appendChild(card);
   });
 }
-function openTitle(item){
-  document.getElementById("playerBox").style.display="block";
-  document.getElementById("playerTitle").textContent=item.title;
-  const video=document.getElementById("video");
-  video.pause();
-  video.removeAttribute("src");
-  video.load();
-  document.getElementById("status").textContent=item.url
-    ? "Chargement de la vidéo autorisée..."
-    : "Cette fiche est une démonstration. Ajoute une URL vidéo autorisée dans le catalogue pour lancer la lecture.";
-  if(item.url){
-    video.src=item.url;
-    video.play().catch(()=>{});
+
+async function loadCategory(type) {
+  if (!credential) {
+    showSettings();
+    setStatus("Connecte d'abord ton API TMDB.");
+    return;
   }
-  document.getElementById("playerBox").scrollIntoView({behavior:"smooth"});
+
+  currentCategory = type;
+  currentAnime = false;
+  currentQuery = "";
+  currentPage = 1;
+  $("categoryTitle").textContent =
+    type === "movie" ? "Tous les films populaires" : "Toutes les séries populaires";
+
+  await loadCatalogPage(false);
 }
-function closePlayer(){
-  const video=document.getElementById("video");
-  video.pause();
-  video.removeAttribute("src");
-  video.load();
-  document.getElementById("playerBox").style.display="none";
+
+async function loadAnime() {
+  if (!credential) {
+    showSettings();
+    setStatus("Connecte d'abord ton API TMDB.");
+    return;
+  }
+
+  currentCategory = "tv";
+  currentAnime = true;
+  currentQuery = "";
+  currentPage = 1;
+  $("categoryTitle").textContent = "Animes japonais";
+  await loadCatalogPage(false);
 }
-function showFeatured(){openTitle(catalog[0])}
-document.getElementById("search").addEventListener("input",e=>{
-  const q=e.target.value.toLowerCase().trim();
-  render(catalog.filter(item=>(item.title+" "+item.type+" "+item.desc).toLowerCase().includes(q)));
+
+async function searchTitles() {
+  if (!credential) {
+    showSettings();
+    setStatus("Connecte d'abord ton API TMDB.");
+    return;
+  }
+
+  const query = $("searchInput").value.trim();
+  if (!query) {
+    setStatus("Entre un titre à rechercher.");
+    return;
+  }
+
+  currentQuery = query;
+  currentAnime = false;
+  currentPage = 1;
+  $("categoryTitle").textContent = "Résultats : " + query;
+  $("searchResults").style.display = "block";
+
+  try {
+    const data = await api("/search/multi", {
+      query,
+      page:1,
+      include_adult:"false"
+    });
+
+    const results = (data.results || []).filter(item =>
+      item.media_type === "movie" || item.media_type === "tv"
+    );
+
+    renderRail("searchRail", results, "movie");
+    $("searchResults").scrollIntoView({behavior:"smooth"});
+    setStatus((data.total_results || 0) + " résultats trouvés.");
+  } catch (error) {
+    setStatus("Erreur de recherche : " + error.message);
+  }
+
+  await loadCatalogPage(false);
+}
+
+async function loadCatalogPage(append) {
+  const thisRequest = ++requestId;
+  if (!append) $("catalog").innerHTML = "";
+  $("moreBtn").style.display = "none";
+  setStatus("Chargement du catalogue...");
+
+  try {
+    let data;
+
+    if (currentQuery) {
+      data = await api("/search/multi", {
+        query:currentQuery,
+        page:currentPage,
+        include_adult:"false"
+      });
+      data.results = (data.results || []).filter(item =>
+        item.media_type === "movie" || item.media_type === "tv"
+      );
+    } else if (currentAnime) {
+      data = await api("/discover/tv", {
+        with_origin_country:"JP",
+        with_genres:16,
+        sort_by:"popularity.desc",
+        page:currentPage
+      });
+    } else {
+      data = await api("/" + currentCategory + "/popular", {
+        page:currentPage
+      });
+    }
+
+    if (thisRequest !== requestId) return;
+
+    totalPages = Math.min(data.total_pages || 1, 500);
+
+    if (!append) $("catalog").innerHTML = "";
+
+    const existing = Array.from($("catalog").children);
+    const temp = document.createElement("div");
+    temp.className = "rail";
+    renderRailInto(temp, data.results || [], currentCategory);
+
+    Array.from(temp.children).forEach(card => $("catalog").appendChild(card));
+
+    $("resultCount").textContent =
+      (data.total_results || 0).toLocaleString("fr-FR") + " titres répertoriés";
+
+    $("moreBtn").style.display = currentPage < totalPages ? "inline-block" : "none";
+    setStatus("Catalogue chargé · Page " + currentPage + ".");
+  } catch (error) {
+    setStatus("Erreur : " + error.message);
+  }
+}
+
+function renderRailInto(rail, items, type) {
+  if (!items.length) {
+    rail.innerHTML = '<div class="empty">Aucun titre trouvé.</div>';
+    return;
+  }
+
+  items.forEach(item => {
+    const itemType = item.media_type || type;
+    const title = item.title || item.name || "Titre inconnu";
+    const year = (item.release_date || item.first_air_date || "").slice(0,4);
+    const card = document.createElement("article");
+    card.className = "card";
+
+    card.innerHTML =
+      (item.poster_path
+        ? '<img loading="lazy" src="' + imageURL(item.poster_path) +
+          '" alt="Affiche de ' + escapeHTML(title) + '">'
+        : '<div class="poster-placeholder">MADARA FLIX</div>') +
+      '<div class="card-info"><h3>' + escapeHTML(title) + '</h3>' +
+      '<div class="meta">' + (itemType === "movie" ? "Film" : "Série / anime") +
+      (year ? " · " + escapeHTML(year) : "") + '</div></div>';
+
+    card.addEventListener("click", () => showDetails(item.id, itemType));
+    rail.appendChild(card);
+  });
+}
+
+async function loadMore() {
+  if (currentPage >= totalPages) return;
+  currentPage++;
+  await loadCatalogPage(true);
+}
+
+async function showDetails(id, type) {
+  const box = $("details");
+  box.style.display = "block";
+  box.innerHTML = "<p>Chargement des informations...</p>";
+  box.scrollIntoView({behavior:"smooth",block:"start"});
+
+  try {
+    const data = await api("/" + type + "/" + id);
+    const title = data.title || data.name || "Sans titre";
+    const year = (data.release_date || data.first_air_date || "").slice(0,4);
+    const genres = (data.genres || []).map(g =>
+      '<span class="pill">' + escapeHTML(g.name) + '</span>'
+    ).join("");
+
+    box.innerHTML =
+      (data.poster_path
+        ? '<img src="' + imageURL(data.poster_path) + '" alt="Affiche">'
+        : "") +
+      '<h2>' + escapeHTML(title) + '</h2>' +
+      '<p class="small">' + escapeHTML(year || "Date inconnue") +
+      ' · Note : ' + (data.vote_average ? Number(data.vote_average).toFixed(1) : "—") +
+      '/10</p>' +
+      '<div>' + genres + '</div>' +
+      '<p class="overview">' +
+      escapeHTML(data.overview || "Aucun résumé disponible en français.") +
+      '</p>' +
+      (type === "tv"
+        ? '<div id="seasons"><h3>Saisons et épisodes</h3></div>'
+        : '<p class="small">La fiche donne les informations du film, pas son fichier vidéo.</p>') +
+      '<button class="secondary" id="closeDetails">Fermer</button>';
+
+    $("closeDetails").addEventListener("click", () => {
+      box.style.display = "none";
+    });
+
+    if (type === "tv") renderSeasons(data, box);
+  } catch (error) {
+    box.innerHTML = "<p>Impossible de charger la fiche : " +
+      escapeHTML(error.message) + '</p><button onclick="closeDetails()">Fermer</button>';
+  }
+}
+
+function closeDetails() {
+  $("details").style.display = "none";
+}
+
+function renderSeasons(show, box) {
+  const holder = box.querySelector("#seasons");
+  if (!holder) return;
+
+  const seasons = (show.seasons || []).filter(s => s.season_number >= 0);
+
+  if (!seasons.length) {
+    holder.innerHTML += "<p>Aucune saison répertoriée.</p>";
+    return;
+  }
+
+  seasons.forEach(season => {
+    const row = document.createElement("div");
+    row.className = "season";
+
+    const button = document.createElement("button");
+    button.textContent =
+      (season.name || "Saison " + season.season_number) +
+      " · " + (season.episode_count || 0) + " épisodes";
+
+    const list = document.createElement("div");
+    list.className = "episodes";
+    list.style.display = "none";
+
+    button.addEventListener("click", async () => {
+      if (list.dataset.loaded === "yes") {
+        list.style.display = list.style.display === "none" ? "block" : "none";
+        return;
+      }
+
+      list.style.display = "block";
+      list.textContent = "Chargement des épisodes...";
+
+      try {
+        const result = await api(
+          "/tv/" + show.id + "/season/" + season.season_number
+        );
+
+        list.innerHTML = "";
+
+        (result.episodes || []).forEach(ep => {
+          const item = document.createElement("div");
+          item.className = "episode";
+          item.innerHTML =
+            "<strong>Épisode " + escapeHTML(ep.episode_number) +
+            " : " + escapeHTML(ep.name || "Sans titre") + "</strong>" +
+            '<p class="small">' + escapeHTML(ep.air_date || "Date inconnue") + '</p>' +
+            '<p class="small">' +
+            escapeHTML(ep.overview || "Résumé indisponible.") + '</p>';
+          list.appendChild(item);
+        });
+
+        if (!result.episodes || !result.episodes.length) {
+          list.textContent = "Aucun épisode répertorié.";
+        }
+
+        list.dataset.loaded = "yes";
+      } catch (error) {
+        list.textContent = "Erreur : " + error.message;
+      }
+    });
+
+    row.appendChild(button);
+    row.appendChild(list);
+    holder.appendChild(row);
+  });
+}
+
+function playFeatured() {
+  if (!featured) {
+    setStatus("Connecte TMDB pour découvrir les titres.");
+    showSettings();
+    return;
+  }
+  showDetails(featured.id, featuredType);
+}
+
+function showFeaturedDetails() {
+  playFeatured();
+}
+
+function home() {
+  $("hero").scrollIntoView({behavior:"smooth"});
+}
+
+$("searchInput").addEventListener("keydown", event => {
+  if (event.key === "Enter") searchTitles();
 });
-render(catalog);
 </script>
 </body>
 </html>
