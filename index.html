@@ -1,9 +1,168 @@
-MADARA FLIX — installation
 
-1. Ouvre ton éditeur de code sur Android.
-2. Ouvre "index.html".
-3. Sauvegarde une copie de l'ancien fichier.
-4. Remplace son contenu par le code ci-dessous.
-5. Enregistre et ouvre le fichier dans ton navigateur.
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090909">
+<title>MADARA FLIX</title>
+<style>
+:root{--red:#e50914;--bg:#090909;--panel:#181818}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:white;font-family:Arial,sans-serif}
+header{position:sticky;top:0;z-index:10;background:#090909ed;padding:15px 5%;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.logo{font-size:25px;font-weight:900;color:var(--red);white-space:nowrap}
+.logo span{color:white}
+nav{display:flex;gap:16px;flex-wrap:wrap}
+nav a{color:#ddd;text-decoration:none;font-size:14px}
+nav a:hover{color:white}
+.search{margin-left:auto;max-width:220px;width:100%;padding:10px;background:#222;color:white;border:1px solid #444;border-radius:6px}
+.hero{min-height:430px;padding:70px 6% 45px;display:flex;align-items:end;background:linear-gradient(90deg,#090909 5%,#090909dd 42%,#09090920),linear-gradient(0deg,#090909,#09090900),url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=1600&q=80') center/cover}
+.hero-content{max-width:600px}
+.tag{color:#ff5050;font-weight:bold;letter-spacing:3px}
+h1{font-size:clamp(32px,6vw,60px);margin:12px 0}
+.hero p{color:#ddd;line-height:1.6}
+button{cursor:pointer}
+.btn{padding:12px 20px;border:0;border-radius:5px;font-weight:bold;margin:8px 8px 0 0}
+.play{background:white;color:#111}
+.info{background:#444;color:white}
+section.catalog{padding:20px 5%}
+h2{font-size:21px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:16px}
+.card{background:var(--panel);border-radius:8px;overflow:hidden;cursor:pointer;transition:.2s}
+.card:hover{transform:scale(1.035)}
+.card img{display:block;width:100%;aspect-ratio:2/3;object-fit:cover;background:#222}
+.card div{padding:10px}
+.card h3{font-size:15px;margin:0 0 7px}
+.card p{font-size:12px;color:#bbb;margin:0}
+.player-box{display:none;padding:20px 5%;background:#111}
+.player-box video{display:block;width:100%;max-height:70vh;background:black}
+.player-box iframe{width:100%;aspect-ratio:16/9;border:0;background:#000}
+.player-box .close{margin:10px 0;padding:10px;background:#333;color:white;border:0;border-radius:5px}
+#status{color:#ccc;font-size:14px}
+footer{padding:30px 5%;color:#999;background:#111;font-size:13px;line-height:1.7}
+@media(max-width:600px){header{gap:12px}.search{margin-left:0;max-width:none}.hero{min-height:360px;padding-top:45px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">MADARA <span>FLIX</span></div>
+  <nav>
+    <a href="#accueil">Accueil</a>
+    <a href="#films">Films</a>
+    <a href="#series">Séries</a>
+    <a href="#anime">Anime</a>
+  </nav>
+  <input class="search" id="search" placeholder="Rechercher un titre..." aria-label="Rechercher">
+</header>
 
-Les affiches et titres ci-dessous servent de démonstration. Les vidéos ne seront lisibles que lorsque tu ajouteras des URL vidéo valides et autorisées.
+<main>
+<section class="hero" id="accueil">
+  <div class="hero-content">
+    <div class="tag">MADARA FLIX ORIGINAL</div>
+    <h1>TON UNIVERS.<br>SANS LIMITES.</h1>
+    <p>Découvre des films, des séries et des animations. Explore le catalogue et lance les contenus disponibles légalement.</p>
+    <button class="btn play" onclick="showFeatured()">▶ Découvrir</button>
+    <button class="btn info" onclick="document.getElementById('films').scrollIntoView({behavior:'smooth'})">ⓘ Explorer le catalogue</button>
+  </div>
+</section>
+
+<div class="player-box" id="playerBox">
+  <h2 id="playerTitle">Lecture</h2>
+  <video id="video" controls playsinline>
+    Ton navigateur ne prend pas en charge la vidéo.
+  </video>
+  <p id="status">Sélectionne un contenu pour commencer.</p>
+  <button class="close" onclick="closePlayer()">Fermer le lecteur</button>
+</div>
+
+<section class="catalog" id="films">
+  <h2>🎬 Films</h2>
+  <div class="cards" id="filmCards"></div>
+</section>
+
+<section class="catalog" id="series">
+  <h2>📺 Séries</h2>
+  <div class="cards" id="seriesCards"></div>
+</section>
+
+<section class="catalog" id="anime">
+  <h2>🔥 Animations et anime</h2>
+  <div class="cards" id="animeCards"></div>
+</section>
+</main>
+
+<footer>
+  <strong>MADARA FLIX</strong><br>
+  Prototype indépendant de streaming.<br>
+  Les titres fictifs illustrent la présentation du catalogue.
+  N'ajoute que des vidéos que tu es autorisé à diffuser.
+</footer>
+
+<script>
+const poster = (id) =>
+  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=500&q=80`;
+
+const catalog = [
+ {title:"Le Dernier Horizon",type:"film",year:"2025",desc:"Une aventure au-delà des étoiles.",image:"photo-1446776811953-b23d57bd21aa",url:""},
+ {title:"Le Royaume Oublié",type:"film",year:"2024",desc:"Un royaume mystérieux.",image:"photo-1518709268805-4e9042af9f23",url:""},
+ {title:"Mission Nocturne",type:"film",year:"2025",desc:"Une mission pleine de suspense.",image:"photo-1519608487953-e999c86e7455",url:""},
+ {title:"Les Chroniques",type:"serie",year:"Saison 1",desc:"Une histoire en plusieurs épisodes.",image:"photo-1518837695005-2083093ee35b",url:""},
+ {title:"La Cité Secrète",type:"serie",year:"Saison 1",desc:"Les secrets d'une cité.",image:"photo-1519608487953-e999c86e7455",url:""},
+ {title:"Étoiles Ninja",type:"anime",year:"Animation",desc:"Une aventure animée originale.",image:"photo-1462331940025-496dfbfc7564",url:""},
+ {title:"Voyage Cosmique",type:"anime",year:"Animation",desc:"Une exploration de l'univers.",image:"photo-1446776811953-b23d57bd21aa",url:""}
+];
+
+function render(items){
+  const groups={film:"filmCards",serie:"seriesCards",anime:"animeCards"};
+  Object.values(groups).forEach(id=>document.getElementById(id).innerHTML="");
+  items.forEach(item=>{
+    const card=document.createElement("article");
+    card.className="card";
+    const img=document.createElement("img");
+    img.src=poster(item.image);
+    img.alt=item.title;
+    img.loading="lazy";
+    const content=document.createElement("div");
+    const title=document.createElement("h3");
+    title.textContent=item.title;
+    const desc=document.createElement("p");
+    desc.textContent=item.year+" • "+item.desc;
+    content.append(title,desc);
+    card.append(img,content);
+    card.onclick=()=>openTitle(item);
+    document.getElementById(groups[item.type]).appendChild(card);
+  });
+}
+function openTitle(item){
+  document.getElementById("playerBox").style.display="block";
+  document.getElementById("playerTitle").textContent=item.title;
+  const video=document.getElementById("video");
+  video.pause();
+  video.removeAttribute("src");
+  video.load();
+  document.getElementById("status").textContent=item.url
+    ? "Chargement de la vidéo autorisée..."
+    : "Cette fiche est une démonstration. Ajoute une URL vidéo autorisée dans le catalogue pour lancer la lecture.";
+  if(item.url){
+    video.src=item.url;
+    video.play().catch(()=>{});
+  }
+  document.getElementById("playerBox").scrollIntoView({behavior:"smooth"});
+}
+function closePlayer(){
+  const video=document.getElementById("video");
+  video.pause();
+  video.removeAttribute("src");
+  video.load();
+  document.getElementById("playerBox").style.display="none";
+}
+function showFeatured(){openTitle(catalog[0])}
+document.getElementById("search").addEventListener("input",e=>{
+  const q=e.target.value.toLowerCase().trim();
+  render(catalog.filter(item=>(item.title+" "+item.type+" "+item.desc).toLowerCase().includes(q)));
+});
+render(catalog);
+</script>
+</body>
+</html>
