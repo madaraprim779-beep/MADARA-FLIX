@@ -1,51 +1,47 @@
-<div id="intro">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MADARAFLIX</title>
 <style>
-#intro{position:fixed;inset:0;background:#000;z-index:99999;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.netflix-logo{
-  display:flex; gap:1px; 
-  transform:scale(1);
-  animation:netflixZoom 4s ease-in-out forwards;
-  white-space:nowrap;
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#141414;color:#fff;font-family:Arial, sans-serif}
+
+/* INTRO CORRIGEE - 4 SECONDES */
+#intro{
+ position:fixed; inset:0; background:#000; z-index:99999;
+ display:flex; align-items:center; justify-content:center;
 }
-.netflix-logo span{
-  font-family:Impact,Arial Black; 
-  font-size: clamp(28px, 6vw, 62px); /* s'adapte à l'écran */
-  font-weight:900;
-  color:#e50914;
-  display:inline-block;
-  opacity:0;
-  transform:translateY(100px);
-  animation: netflixLetter 0.6s forwards;
+#intro h1{
+ font-family:Impact, Arial Black;
+ font-size:11vw; /* s'adapte à l'écran */
+ color:#e50914;
+ letter-spacing:2px;
+ font-weight:900;
+ transform:scaleY(0.8);
+ animation: netflix 4s ease-in-out forwards;
+ white-space:nowrap;
 }
-@keyframes netflixLetter{
-  0%{opacity:0;transform:translateY(100px) scaleY(0)}
-  60%{opacity:1;transform:translateY(-5px) scaleY(1.1)}
-  100%{opacity:1;transform:translateY(0) scaleY(1);text-shadow:0 0 25px #e50914}
+@keyframes netflix{
+ 0%{opacity:0; transform:scale(0.5) scaleY(0.8); letter-spacing:20px; filter:blur(10px)}
+ 20%{opacity:1; transform:scale(1.1) scaleY(1); filter:blur(0); text-shadow:0 0 30px #e50914}
+ 30%{transform:scale(1) scaleY(1)}
+ 80%{transform:scale(1) scaleY(1); opacity:1; text-shadow:0 0 20px #e50914}
+ 100%{transform:scale(2.5) scaleY(1); opacity:0; letter-spacing:30px; filter:blur(10px)}
 }
-@keyframes netflixZoom{
-  0%{transform:scale(0.7)}
-  15%{transform:scale(1)}
-  75%{transform:scale(1)}
-  100%{transform:scale(2.5);opacity:0}
-}
-.netflix-logo span:nth-child(1){animation-delay:0.2s}
-.netflix-logo span:nth-child(2){animation-delay:0.28s}
-.netflix-logo span:nth-child(3){animation-delay:0.36s}
-.netflix-logo span:nth-child(4){animation-delay:0.44s}
-.netflix-logo span:nth-child(5){animation-delay:0.52s}
-.netflix-logo span:nth-child(6){animation-delay:0.6s}
-.netflix-logo span:nth-child(7){animation-delay:0.68s}
-.netflix-logo span:nth-child(8){animation-delay:0.76s}
-.netflix-logo span:nth-child(9){animation-delay:0.84s}
-.netflix-logo span:nth-child(10){animation-delay:0.92s}
-#intro.fadeOut{animation:hide 0.4s 3.6s forwards}
-@keyframes hide{to{opacity:0;visibility:hidden}}
 </style>
-<div class="netflix-logo">
-<span>M</span><span>A</span><span>D</span><span>A</span><span>R</span><span>A</span><span>F</span><span>L</span><span>I</span><span>X</span>
+</head>
+<body>
+<div id="intro"><h1>MADARAFLIX</h1></div>
+
+<!-- TON SITE EN DESSOUS -->
+<div id="site" style="padding:20px; text-align:center; margin-top:50px">
+<h2 style="color:#e50914">MADARAFLIX CHARGEMENT...</h2>
+<p>Ton site va s'afficher ici après l'intro</p>
 </div>
-</div>
+
 <script>
-setTimeout(()=>{document.getElementById('intro').classList.add('fadeOut')},3600);
 setTimeout(()=>{document.getElementById('intro').style.display='none'},4000);
 </script>
+</body>
+</html>
