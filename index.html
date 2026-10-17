@@ -1,202 +1,177 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>MADARAFLIX</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Inter,sans-serif;-webkit-font-smoothing:antialiased}
+*{margin:0;padding:0;box-sizing:border-box}body{background:#0a0a0a;color:#fff;font-family:Inter,sans-serif;overflow-x:hidden}
 
-/* INTRO MF COMME TA VIDEO */
-#intro{position:fixed;inset:0;background:#000;z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column}
-.mf-logo{font-family:Impact,Arial Black;font-weight:900;font-size:86px;letter-spacing:-3px;display:flex;opacity:0;transform:scale(.85);animation:mfIn .8s .2s forwards}
-.mf-logo b:first-child{color:#fff} .mf-logo b:last-child{color:#e50914}
-@keyframes mfIn{to{opacity:1;transform:scale(1)}}
-.mf-line{position:absolute;top:52%;left:-15%;width:130%;height:2px;background:linear-gradient(90deg,transparent,#e50914,transparent);transform:rotate(-14deg) translateX(-100%);animation:line 1.1s .1s forwards}
-@keyframes line{to{transform:rotate(-14deg) translateX(100%);opacity:0}}
-.mf-sub{margin-top:14px;text-align:center;opacity:0;animation:sub .6s .9s forwards}@keyframes sub{to{opacity:1}}
-.mf-sub h2{font-size:20px;letter-spacing:3px;font-weight:900} .mf-sub h2 .r{color:#e50914}
-.mf-sub p{font-size:9px;letter-spacing:4px;opacity:.55;margin-top:6px}
-#intro.out{animation:out .8s 2.6s forwards}@keyframes out{to{opacity:0;transform:scale(1.15);filter:blur(15px);visibility:hidden}}
+/* ===== INTRO COMME TA VIDEO ===== */
+#intro{
+ position:fixed;inset:0;background:#000;z-index:99999;
+ display:flex;align-items:center;justify-content:center;flex-direction:column;
+}
+.mf-wrap{position:relative; text-align:center}
+.mf-logo{
+ font-family:Impact, Arial Black; font-weight:900; font-size:92px; line-height:1;
+ display:flex; justify-content:center; letter-spacing:-4px;
+ opacity:0; transform:translateY(20px) scale(0.9);
+ animation: mfIn 0.8s 0.3s forwards cubic-bezier(0.2,1,0.3,1);
+}
+.mf-logo b:first-child{color:#fff}
+.mf-logo b:last-child{color:#e50914}
+@keyframes mfIn{to{opacity:1; transform:translateY(0) scale(1)}}
 
-/* PROFIL SCREEN COMME PHOTO 1 */
-#profiles{position:fixed;inset:0;background:#000;z-index:90000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
-.p-hero{width:100%;height:58vh;background-size:cover;background-position:center;position:absolute;top:0;left:0;opacity:.7}
-.p-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 20%,#000 95%)}
-.p-content{position:relative;z-index:2;width:100%;max-width:380px;text-align:center}
-.p-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);padding:6px 12px;border-radius:6px;font-size:13px;margin-top:55vh}
-.p-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px}
-.p-item{text-align:center;cursor:pointer}
-.p-icon{width:100%;aspect-ratio:1;border-radius:14px;overflow:hidden;background:#222;border:2px solid transparent}
-.p-icon img{width:100%;height:100%;object-fit:cover}
-.p-item.active .p-icon{border-color:#fff}
-.p-name{font-size:13px;margin-top:8px;opacity:.9}
-.p-edit{width:100%;aspect-ratio:1;border-radius:14px;background:#2a2a2a;display:flex;align-items:center;justify-content:center;font-size:26px}
+/* trait rouge diagonal comme ta video */
+.mf-line{
+ position:absolute; top:58%; left:-10%; width:120%; height:2px;
+ background:linear-gradient(90deg, transparent, #e50914, transparent);
+ transform:rotate(-12deg) translateX(-100%);
+ animation: lineSweep 1.2s 0.1s forwards ease-out;
+}
+@keyframes lineSweep{
+ 0%{transform:rotate(-12deg) translateX(-100%); opacity:0}
+ 30%{opacity:1}
+ 100%{transform:rotate(-12deg) translateX(100%); opacity:0}
+}
 
-/* NETFLIX HOME COMME PHOTOS 2-3-4 */
-#app{display:none;min-height:100vh;background:#000;padding-bottom:90px}
-.n-top{position:sticky;top:0;z-index:50;background:#000;display:flex;align-items:center;justify-content:space-between;padding:12px 14px}
-.n-logo{color:#e50914;font-weight:900;font-size:36px;line-height:1}
-.n-nav{display:flex;align-items:center;gap:18px;font-weight:700}
-.n-nav .active{border-bottom:3px solid #fff;padding-bottom:4px}
-.n-icons{display:flex;gap:16px;font-size:20px}
-.cat-chips{display:flex;gap:8px;overflow-x:auto;padding:0 14px 12px}
-.cat-chips::-webkit-scrollbar{display:none}
-.chip{border:1px solid #444;padding:8px 16px;border-radius:20px;font-size:13px;white-space:nowrap;background:#1a1a1a}
-.chip.active{background:#fff;color:#000;border-color:#fff}
-.hero-big{margin:0 14px;border-radius:10px;overflow:hidden;position:relative;height:62vw;max-height:420px;background:#111}
-.hero-big img{width:100%;height:100%;object-fit:cover}
-.hero-big::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,#000 15%,transparent 55%)}
-.hero-actions{position:absolute;bottom:12px;left:12px;right:12px;z-index:2}
-.btn-white{background:#fff;color:#000;width:100%;padding:14px;border:none;border-radius:6px;font-weight:900;font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px}
-.btn-grey{background:rgba(255,255,255,.2);color:#fff;width:100%;padding:12px;border:none;border-radius:6px;font-weight:700;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px}
-.sec{padding:0 0 0 14px;margin-top:22px}
-.sec-title{font-weight:700;font-size:17px;margin-bottom:10px}
-.row{display:flex;gap:8px;overflow-x:auto;padding-right:14px}
-.row::-webkit-scrollbar{display:none}
-.card{width:110px;min-width:110px;height:160px;border-radius:6px;overflow:hidden;background:#1a1a1a;position:relative;flex-shrink:0}
-.card img{width:100%;height:100%;object-fit:cover;image-rendering:-webkit-optimize-contrast}
-.card.big{width:154px;min-width:154px;height:92px}
-.progress{position:absolute;bottom:0;left:0;right:0;height:3px;background:#444}
-.progress i{display:block;height:100%;background:#e50914;width:65%}
-.badge-r{position:absolute;bottom:6px;left:6px;background:#e50914;color:#fff;font-size:9px;font-weight:900;padding:3px 6px;border-radius:3px}
+.mf-sub{
+ margin-top:16px; opacity:0;
+ animation: subIn 0.7s 0.9s forwards;
+}
+.mf-sub h2{font-size:22px; letter-spacing:4px; font-weight:900}
+.mf-sub h2 span{color:#fff} .mf-sub h2 span.r{color:#e50914}
+.mf-sub p{margin-top:8px; font-size:9px; letter-spacing:4px; opacity:0.6; text-transform:uppercase}
 
-/* BOTTOM BAR COMME NETFLIX */
-.bottom{position:fixed;bottom:14px;left:14px;right:14px;background:#1f1f1f;border-radius:30px;display:flex;justify-content:space-around;padding:10px 6px;z-index:60}
-.b-item{flex:1;text-align:center;opacity:.5;font-size:10px}.b-item.active{opacity:1}
-.b-item span{display:block;font-size:22px}
-.b-item img{width:26px;height:26px;border-radius:50%}
+@keyframes subIn{
+ from{opacity:0; transform:translateY(10px)}
+ to{opacity:1; transform:translateY(0)}
+}
 
-/* DETAIL */
-#detail{position:fixed;inset:0;background:#000;z-index:100;display:none;overflow-y:auto;padding-bottom:100px}
-.d-back{height:60vh;background-size:cover;background-position:center top;position:relative}
-.d-back::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,#000 25%,transparent 70%)}
+#intro.out{
+ animation: introOut 0.9s 2.8s forwards ease-in;
+}
+@keyframes introOut{
+ to{opacity:0; transform:scale(1.1); filter:blur(12px); visibility:hidden}
+}
+.glow{
+ position:absolute; inset:0; background:radial-gradient(ellipse at center, rgba(229,9,20,0.12) 0%, transparent 70%);
+ opacity:0; animation: glowIn 1s 0.6s forwards;
+}
+@keyframes glowIn{to{opacity:1}}
+
+/* ===== SITE ===== */
+.nav{position:fixed;top:0;width:100%;padding:14px 4%;background:linear-gradient(to bottom,#000 70%,transparent);z-index:50;display:flex;justify-content:space-between;align-items:center}
+.logo{color:#e50914;font-weight:900;font-size:24px;letter-spacing:1px}
+.nav input{background:#1a1a1a;border:1px solid #333;color:#fff;padding:9px 14px;border-radius:6px;width:260px}
+.hero{height:92vh;position:relative;background:#000;display:flex;align-items:flex-end;padding:0 4% 6%;background-size:cover;background-position:center top;transition:1s}
+.hero::after{content:'';position:absolute;inset:0;background:linear-gradient(77deg,rgba(0,0,0,.9) 20%,transparent 60%),linear-gradient(to top,#0a0a0a 12%,transparent 55%)}
+.hero-content{position:relative;z-index:2;max-width:560px}
+.hero h1{font-size:42px;font-weight:900}
+.btn{padding:12px 26px;border:none;border-radius:6px;font-weight:800;font-size:15px;cursor:pointer;margin-right:10px;margin-top:18px}
+.btn-play{background:#e50914;color:#fff}.btn-info{background:rgba(255,255,255,.15);color:#fff}
+.section{padding:0 0 10px 4%}.row-title{font-weight:800;font-size:15px;margin:24px 0 12px;letter-spacing:1px;opacity:.9}
+.row{display:flex;gap:12px;overflow-x:auto;padding-bottom:14px}.row::-webkit-scrollbar{display:none}
+.movie{width:158px;min-width:158px;height:236px;background:#1a1a1a;border-radius:8px;overflow:hidden;position:relative;cursor:pointer;flex-shrink:0;transition:.3s}
+.movie:hover{transform:scale(1.06);z-index:5}.movie img{width:100%;height:100%;object-fit:cover}
+.movie .label{position:absolute;bottom:0;left:0;right:0;padding:24px 10px 10px;background:linear-gradient(to top,#000 70%,transparent);font-size:11px;font-weight:700}
+#detail{position:fixed;inset:0;background:#0a0a0a;z-index:100;display:none;overflow-y:auto}
+.d-hero{height:78vh;background-size:cover;background-position:center top;position:relative;display:flex;align-items:flex-end;padding:4%}
+.d-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,#0a0a0a 30%,transparent 70%),linear-gradient(90deg,#0a0a0a 30%,transparent 70%)}
+.d-content{position:relative;z-index:2;max-width:640px}
+.tabs{display:flex;gap:24px;padding:0 4%;border-bottom:1px solid #222;position:sticky;top:0;background:#0a0a0a}
+.tab{padding:16px 0;color:#777;cursor:pointer;font-weight:700;font-size:13px;border-bottom:3px solid transparent}.tab.active{color:#fff;border-color:#e50914}
+.ep{display:flex;gap:14px;padding:14px 4%;border-bottom:1px solid #1a1a1a;align-items:center;cursor:pointer}.ep:hover{background:#151515}
+.ep-num{font-size:20px;color:#555;width:22px;font-weight:800}.ep-thumb{width:130px;height:74px;border-radius:6px;object-fit:cover;background:#222}
+#player{position:fixed;inset:0;background:#000;z-index:200;display:none}
+.close{position:absolute;top:16px;left:16px;z-index:201;background:#fff;color:#000;border:none;padding:10px 16px;border-radius:20px;font-weight:800;cursor:pointer}
+.close2{position:absolute;top:16px;right:16px;z-index:101;background:rgba(0,0,0,.6);color:#fff;border:1px solid #444;padding:8px 14px;border-radius:20px;cursor:pointer}
+.badge{font-size:10px;background:#e50914;padding:3px 6px;border-radius:3px;margin-left:6px}
+@media(max-width:600px){.mf-logo{font-size:64px}.mf-sub h2{font-size:16px}.nav input{width:150px}}
 </style>
 </head>
 <body>
 
+<!-- INTRO COMME TA VIDEO -->
 <div id="intro">
-<div class="mf-logo"><b>M</b><b>F</b></div>
+<div class="glow"></div>
+<div class="mf-wrap">
 <div class="mf-line"></div>
-<div class="mf-sub"><h2>MADARA <span class="r">FLIX</span></h2><p>TON UNIVERS. SANS LIMITES.</p></div>
-</div>
-
-<!-- ECRAN PROFILS -->
-<div id="profiles">
-<div class="p-hero" id="pHero"></div>
-<div class="p-content">
-<div class="p-tag">👍 Parmi les plus aimés</div>
-<div style="margin-top:18px;font-size:16px;opacity:.9">Choisissez votre profil</div>
-<div class="p-grid">
-<div class="p-item active" onclick="enterApp('Madara225')"><div class="p-icon"><img src="https://i.pravatar.cc/200?img=11"></div><div class="p-name">Madara225</div></div>
-<div class="p-item" onclick="enterApp('Minata')"><div class="p-icon"><img src="https://i.pravatar.cc/200?img=5"></div><div class="p-name">Minata</div></div>
-<div class="p-item" onclick="enterApp('Jedel')"><div class="p-icon"><img src="https://i.pravatar.cc/200?img=8"></div><div class="p-name">Jedel</div></div>
-<div class="p-item" onclick="enterApp('Madara')"><div class="p-icon" style="background:#123a4a;display:flex;align-items:center;justify-content:center;font-size:32px">☺<span style="position:absolute;bottom:10px;font-size:8px;color:#ff6">jeunesse</span></div><div class="p-name">Madara</div></div>
-<div class="p-item" onclick="enterApp('Sylla')"><div class="p-icon"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200"></div><div class="p-name">Sylla</div></div>
-<div class="p-item" onclick="enterApp('Edit')"><div class="p-edit">✎</div><div class="p-name">Modifier</div></div>
+<div class="mf-logo"><b>M</b><b>F</b></div>
+<div class="mf-sub">
+<h2><span>MADARA</span> <span class="r">FLIX</span></h2>
+<p>Ton univers. Sans limites.</p>
 </div>
 </div>
 </div>
 
-<!-- APP NETFLIX -->
-<div id="app">
-<div class="n-top">
-<div style="display:flex;align-items:center;gap:12px"><div class="n-logo">N</div><div class="n-nav"><span class="active">Accueil</span></div></div>
-<div class="n-icons"><span>⬇</span><span>🔔</span></div>
-</div>
-<div class="cat-chips"><div class="chip active">Séries</div><div class="chip">Films</div><div class="chip">Jeux</div><div class="chip">Halloween</div><div class="chip">Tout</div></div>
-<div class="hero-big" id="heroBig"></div>
-<div id="allSections"></div>
-<div class="bottom">
-<div class="b-item active"><span>⌂</span>Accueil</div>
-<div class="b-item"><span>⧉</span>Extraits</div>
-<div class="b-item"><span>⌕</span>Rechercher</div>
-<div class="b-item active"><img id="bAvatar" src="https://i.pravatar.cc/100?img=11"><div>Mon Netflix</div></div>
-</div>
-</div>
-
-<div id="detail"></div>
+<div class="nav"><div class="logo">MADARA FLIX</div><div style="display:flex;gap:10px;align-items:center"><input id="search" placeholder="Rechercher un titre..." oninput="doSearch()"><button onclick="doSearch()" style="background:#e50914;color:#fff;border:none;padding:9px 14px;border-radius:6px;font-weight:800;cursor:pointer">OK</button></div></div>
+<div class="hero" id="hero"></div>
+<div id="rows"></div>
+<div id="detail"><button class="close2" onclick="closeDetail()">✕</button><div class="d-hero" id="dHero"><div class="d-content"><h1 id="dTitle" style="font-size:36px;font-weight:900"></h1><div id="dMeta" style="margin-top:8px;font-size:12px;opacity:.7"></div><p id="dDesc" style="margin-top:12px;font-size:13px;line-height:1.5;opacity:.85"></p><div><button class="btn btn-play" onclick="playTrailer()">▶ Explorer le catalogue</button><button class="btn btn-info" onclick="playTrailer()">Connecter mon API</button></div></div></div><div class="tabs" id="tabs"></div><div id="epList"></div></div>
+<div id="player"></div>
 
 <script>
-// API DIRECT DANS LE CODE - QUALITE HD
 const TMDB_KEY="4d915c255bcab0ffd0b07dd2a63f3387";
-const IMG_ORIGINAL="https://image.tmdb.org/t/p/original";
-const IMG_HD="https://image.tmdb.org/t/p/w780";
-const IMG_POSTER="https://image.tmdb.org/t/p/w500";
-
-let ALL=[];
-const TITLES=["À vie","The Mentalist","S.W.A.T.","The Rookie","Young Sheldon","Tyler Perry Beauty in Black","The Blacklist","Demon Slayer","Kuroko's Basketball","Hunter x Hunter","Jujutsu Kaisen","One Piece","Stranger Things","Wednesday","Squid Game","Lupin","Dark","Vikings","Peaky Blinders","The Witcher","Bridgerton","You","Black Mirror","The Sandman","Naruto","Attack on Titan","Death Note","Solo Leveling","Dune","Inception","Interstellar","Joker","The Batman","Avengers Endgame","Spider-Man","John Wick","Top Gun Maverick","Avatar","The Last of Us","The Boys","House of the Dragon","S.W.A.T.","The Rookie"];
-
-async function fetchOne(q){
+const TITLES=["Stranger Things","Wednesday","Squid Game","La Casa de Papel","Lupin","Dark","The Witcher","Bridgerton","The Night Agent","You","Black Mirror","The Umbrella Academy","Outer Banks","Elite","Breaking Bad","Better Call Saul","Lucifer","The Walking Dead","Vikings","Peaky Blinders","The Crown","The Queen's Gambit","Ozark","Narcos","Alice in Borderland","All of Us Are Dead","Sweet Home","The Glory","Crash Landing on You","The Sandman","One Piece","Naruto","Demon Slayer","Jujutsu Kaisen","Attack on Titan","Death Note","My Hero Academia","One-Punch Man","Bleach","Dragon Ball Z","Dragon Ball Super","Pokémon","Spy x Family","Chainsaw Man","Your Name","Spirited Away","Howl's Moving Castle","Princess Mononoke","Akira","Perfect Blue","The Recruit","The Gentlemen","The Fall of the House of Usher","Midnight Mass","The Haunting of Hill House","Fool Me Once","The Blacklist","Suits","The Flash","The Vampire Diaries","The Adam Project","Extraction","Red Notice","Bird Box","The Old Guard","Enola Holmes","Nimona","Klaus","Spider-Man: Into the Spider-Verse","Puss in Boots: The Last Wish","Cobra Kai","Ginny & Georgia","Virgin River","Emily in Paris","Sex Education","Purple Hearts","The Irishman","All Quiet on the Western Front","The Shawshank Redemption","Forrest Gump","Interstellar","Inception","The Dark Knight","The Batman","Joker","Man of Steel","Wonder Woman","Aquaman","Justice League","Avengers: Endgame","Iron Man","Thor: Ragnarok","Black Panther","Doctor Strange","Guardians of the Galaxy","Spider-Man: No Way Home","Venom","X-Men","Logan","Deadpool","Spider-Man","Transformers","Fast Five","Furious 7","Fast X","Mission: Impossible – Fallout","John Wick: Chapter 4","The Equalizer","Taken","The Bourne Identity","Ip Man","Rush Hour","Creed","Rocky","Top Gun: Maverick","Gladiator","The Lord of the Rings","Harry Potter","The Hunger Games","Pirates of the Caribbean","Jurassic Park","Jurassic World","Godzilla","Godzilla vs. Kong","Jumanji","The Mummy","Uncharted","Knives Out","Gone Girl","Se7en","Shutter Island","The Conjuring","It","A Quiet Place","Get Out","Saw","Scream","World War Z","Train to Busan","The Menu","Parasite","The Matrix","Blade Runner 2049","Dune","Arrival","Tenet","Terminator 2","Alien","Predator","Star Wars","The Mandalorian","Game of Thrones","The Last of Us","Arcane","Avatar","Gravity Falls","Solo Leveling","Foundation","Silo","Severance","Westworld","Lost","Loki","WandaVision","The Boys","Invincible","House of the Dragon","Fallout","From","John Wick","Mission: Impossible","Top Gun","Avengers: Infinity War","Spider-Man: Homecoming","Deadpool 2","Bumblebee","Pacific Rim","King Kong","Godzilla: King of the Monsters","Jurassic World: Fallen Kingdom","The Meg","Tomb Raider","Sherlock Holmes","Glass Onion","The Sixth Sense","The Nun","Insidious","It Chapter Two","The Shining","A Quiet Place Part II","Hereditary","Midsommar","Nope","Smile","Final Destination","I Am Legend","Zombieland","Resident Evil","The Purge","Oldboy","Snowpiercer","The Martian","Gravity","Ex Machina","Looper","Aliens","Prey","Andor","Star Trek","Doctor Who"];
+let ALL=[],FILTERED=[],current=null,curSeason=0;
+async function fetchMovie(title){
  try{
-  const r=await fetch(`https://api.themoviedb.org/3/search/multi?api_key=${TMDB_KEY}&query=${encodeURIComponent(q)}&language=fr-FR`);
+  const r=await fetch(`https://api.themoviedb.org/3/search/multi?api_key=${TMDB_KEY}&query=${encodeURIComponent(title)}&language=fr-FR`);
   const d=await r.json(); if(!d.results||!d.results[0]) return null;
-  const m=d.results[0];
-  return {
-   title:m.title||m.name,
-   poster:m.poster_path?`${IMG_POSTER}${m.poster_path}`:`https://via.placeholder.com/500x750?text=${encodeURIComponent(q)}`,
-   backdrop:m.backdrop_path?`${IMG_ORIGINAL}${m.backdrop_path}`:`${IMG_HD}${m.poster_path}`,
-   overview:m.overview||""
+  const m=d.results[0]; const isTV=m.media_type==='tv'||!!m.first_air_date;
+  let trailer=`https://www.w3schools.com/html/mov_bbb.mp4`;
+  try{
+   const vR=await fetch(`https://api.themoviedb.org/3/${isTV?'tv':'movie'}/${m.id}/videos?api_key=${TMDB_KEY}&language=fr-FR`); const vD=await vR.json();
+   const tr=vD.results.find(v=>v.type==="Trailer"&&v.site==="YouTube")||vD.results.find(v=>v.site==="YouTube");
+   if(tr) trailer=`https://www.youtube.com/embed/${tr.key}?autoplay=1&mute=0`;
+  }catch(e){}
+  const poster=m.poster_path?`https://image.tmdb.org/t/p/w500${m.poster_path}`:"";
+  const backdrop=m.backdrop_path?`https://image.tmdb.org/t/p/w1280${m.backdrop_path}`:poster;
+  const backdropHD=m.backdrop_path?`https://image.tmdb.org/t/p/original${m.backdrop_path}`:backdrop;
+  let seasons=[];
+  if(isTV){
+   try{
+    const tvD=await fetch(`https://api.themoviedb.org/3/tv/${m.id}?api_key=${TMDB_KEY}&language=fr-FR`).then(r=>r.json());
+    const nS=tvD.number_of_seasons||1;
+    for(let s=1;s<=Math.min(nS,5);s++){
+     try{
+      const sD=await fetch(`https://api.themoviedb.org/3/tv/${m.id}/season/${s}?api_key=${TMDB_KEY}&language=fr-FR`).then(r=>r.json());
+      if(sD.episodes){ seasons.push({num:s,name:sD.name||`Saison ${s}`,episodes:sD.episodes.map(ep=>({num:ep.episode_number,title:ep.name||`Épisode ${ep.episode_number}`,duration:ep.runtime?`${ep.runtime}m`:"45m",thumb:ep.still_path?`https://image.tmdb.org/t/p/w300${ep.still_path}`:backdrop,desc:ep.overview||"",video:trailer}))});}
+     }catch(e){}
+    }
+   }catch(e){}
   }
+  if(seasons.length===0){ seasons=[{num:1,name:isTV?"Saison 1":"Film",episodes:[{num:1,title:m.title||m.name,duration:isTV?"50m":"2h15m",thumb:backdrop,desc:m.overview||"",video:trailer}]}];}
+  return {title:m.title||m.name,year:(m.release_date||m.first_air_date||"").slice(0,4),poster,backdrop,backdropHD,trailer,desc:m.overview||"",type:isTV?"Série":"Film",seasons};
  }catch(e){return null}
 }
-
-async function loadAll(){
+async function load(){
  for(let t of TITLES){
-  const mv=await fetchOne(t); if(mv) ALL.push(mv);
-  if(ALL.length>2) render();
+  const mv=await fetchMovie(t); if(mv){ALL.push(mv); FILTERED=ALL; render();}
+  await new Promise(r=>setTimeout(r,80));
  }
- render();
 }
-
 function render(){
- if(ALL.length<1) return;
- document.getElementById('pHero').style.backgroundImage=`url('${ALL[0].backdrop}')`;
- const h=ALL[Math.floor(Math.random()*Math.min(6,ALL.length))];
- document.getElementById('heroBig').innerHTML=`<img src="${h.backdrop}"><div class="hero-actions"><button class="btn-white">▶ Regarder le film</button><button class="btn-grey">+ Ma liste</button></div>`;
-
- const sections=[
-  ["Reprendre avec le profil de Madara225", ALL.slice(0,4), true],
-  ["Séries policières", ALL.slice(1,8), false],
-  ["Les séries regardées en boucle", ALL.slice(8,14), false],
-  ["Anime et titres inspirés de l'animation japonaise", ALL.slice(14,20), false],
-  ["Séries à suspense", ALL.slice(20,26), false],
-  ["Ma liste", ALL.slice(2,7), false],
-  ["Bandes-annonces que vous avez regardées", ALL.slice(26,32), false]
- ];
-
- document.getElementById('allSections').innerHTML=sections.map(([title,list,isContinue])=>`
-  <div class="sec">
-   <div class="sec-title">${title}</div>
-   <div class="row">
-   ${list.map(m=>`
-    <div class="card ${isContinue?'big':''}" onclick="openDetail('${m.title}')">
-     <img src="${m.poster}" loading="eager">
-     ${isContinue?`<div class="progress"><i></i></div>`:`${Math.random()>.7?`<div class="badge-r">Ajout récent</div>`:''}`}
-    </div>`).join('')}
-   </div>
-  </div>
- `).join('');
+ if(!FILTERED.length) return;
+ const hero=FILTERED[0];
+ document.getElementById('hero').style.backgroundImage=`url('${hero.backdropHD}')`;
+ document.getElementById('hero').innerHTML=`<div class="hero-content"><div style="font-size:11px;letter-spacing:3px;opacity:.6;margin-bottom:10px">TON CINEMA, TON UNIVERS</div><h1>${hero.title.split(' ')[0]} <span style="color:#e50914">${hero.title.split(' ').slice(1).join(' ')}</span> <span class="badge">4K</span></h1><p style="margin-top:12px;font-size:13px;opacity:.8;line-height:1.4">${hero.desc.slice(0,150)}...</p><div><button class="btn btn-play" onclick="openDetail(0)">▶ Explorer le catalogue</button><button class="btn btn-info">Connecter mon API</button></div></div>`;
+ const cats=[["Tendances",FILTERED.slice(0,18)],["Films",FILTERED.filter(f=>f.type==="Film")],["Séries",FILTERED.filter(f=>f.type==="Série")]];
+ document.getElementById('rows').innerHTML=cats.map(([title,list])=>`<div class="section"><div class="row-title">${title.toUpperCase()}</div><div class="row">${list.map(it=>{const idx=ALL.indexOf(it); return `<div class="movie" onclick="openDetail(${idx})"><img src="${it.poster}" loading="lazy"><div class="label">${it.title}<br><span style="opacity:.6">${it.year} • ${it.type}</span></div></div>`}).join('')}</div></div>`).join('');
 }
+function openDetail(idx){current=ALL[idx]; curSeason=0; document.getElementById('dHero').style.backgroundImage=`url('${current.backdropHD}')`; document.getElementById('dTitle').innerText=current.title; document.getElementById('dMeta').innerText=`${current.year} • ${current.type} • 4K • ${current.seasons.length} saison(s)`; document.getElementById('dDesc').innerText=current.desc; document.getElementById('tabs').innerHTML=current.seasons.map((s,i)=>`<div class="tab ${i==0?'active':''}" onclick="switchS(${i})">${s.name}</div>`).join(''); renderEp(); document.getElementById('detail').style.display='block';}
+function switchS(i){curSeason=i; document.querySelectorAll('.tab').forEach((t,idx)=>t.classList.toggle('active',idx==i)); renderEp();}
+function renderEp(){const eps=current.seasons[curSeason].episodes; document.getElementById('epList').innerHTML=eps.map(e=>`<div class="ep" onclick="playTrailer()"><div class="ep-num">${e.num}</div><img class="ep-thumb" src="${e.thumb}"><div style="flex:1"><div style="font-weight:700;font-size:13px">${e.title}</div><div style="font-size:11px;opacity:.5;margin-top:4px">${e.duration} • 4K</div></div><div>▶</div></div>`).join('');}
+function playTrailer(){const url=current.seasons[curSeason].episodes[0].video; document.getElementById('player').innerHTML=`<button class="close" onclick="document.getElementById('player').style.display='none';document.getElementById('player').innerHTML=''">✕</button>${url.includes('youtube')?`<iframe src="${url}" style="width:100%;height:100%;border:none" allow="autoplay;fullscreen" allowfullscreen></iframe>`:`<video src="${url}" controls autoplay style="width:100%;height:100%"></video>`}`; document.getElementById('player').style.display='block';}
+function closeDetail(){document.getElementById('detail').style.display='none'}
+function doSearch(){const q=document.getElementById('search').value.toLowerCase(); FILTERED=q?ALL.filter(a=>a.title.toLowerCase().includes(q)):ALL; render();}
 
-function enterApp(name){
- document.getElementById('profiles').style.display='none';
- document.getElementById('app').style.display='block';
- document.getElementById('bAvatar').src=`https://i.pravatar.cc/100?img=${name==='Madara225'?11:5}`;
- loadAll();
-}
-function openDetail(t){
- const m=ALL.find(a=>a.title===t); if(!m) return;
- document.getElementById('detail').innerHTML=`
-  <div class="d-back" style="background-image:url('${m.backdrop}')"><button onclick="this.parentElement.parentElement.style.display='none'" style="position:absolute;top:16px;left:16px;background:#fff;border:none;padding:8px 12px;border-radius:20px">✕</button></div>
-  <div style="padding:16px"><h2 style="font-size:24px">${m.title}</h2><p style="margin-top:10px;opacity:.7;font-size:13px;line-height:1.4">${m.overview.slice(0,220)}</p>
-  <button class="btn-white" style="margin-top:16px">▶ Regarder</button></div>`;
- document.getElementById('detail').style.display='block';
-}
-
-// INTRO AUTO
-setTimeout(()=>document.getElementById('intro').classList.add('out'),2800);
-setTimeout(()=>document.getElementById('intro').style.display='none',3600);
+// lance intro puis site
+load();
+setTimeout(()=>{document.getElementById('intro').classList.add('out')},2800);
+setTimeout(()=>{document.getElementById('intro').style.display='none'},3700);
 </script>
 </body>
 </html>
