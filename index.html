@@ -4,59 +4,69 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>MADARA FLIX</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{background:#000;color:#fff;font-family:system-ui}
-#intro{position:fixed;inset:0;background:#000;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column}
-.mf{font-family:Impact;font-size:90px;font-weight:900;display:flex;opacity:0;animation:mf .8s .2s forwards}.mf b:last-child{color:#e50914}@keyframes mf{to{opacity:1}} #intro.out{animation:out .8s 2.5s forwards}@keyframes out{to{opacity:0;visibility:hidden}}
+*{margin:0;padding:0;box-sizing:border-box}body{background:#000;color:#fff;font-family:system-ui;overflow-x:hidden}
+/* ANIMATION ENTREE REFAITE */
+#intro{position:fixed;inset:0;background:#000;z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:all .8s}
+.mf-wrap{position:relative;display:flex;flex-direction:column;align-items:center}
+.mf-logo-intro{font-family:Impact,Arial Black;font-size:110px;font-weight:900;letter-spacing:-6px;display:flex;transform:scale(.7);opacity:0;animation:mfPop 1s .3s cubic-bezier(.2,1.5,.5,1) forwards}
+.mf-logo-intro b:first-child{color:#fff;text-shadow:0 0 30px rgba(255,255,255,.3)} .mf-logo-intro b:last-child{color:#e50914;text-shadow:0 0 30px rgba(229,9,20,.8)}
+@keyframes mfPop{to{transform:scale(1);opacity:1}}
+.light{position:absolute;top:50%;left:-30%;width:160%;height:3px;background:linear-gradient(90deg,transparent,#e50914,#fff,#e50914,transparent);transform:rotate(-18deg) translateX(-120%);animation:lightMove 1.2s .9s forwards;box-shadow:0 0 20px #e50914}
+@keyframes lightMove{to{transform:rotate(-18deg) translateX(120%)}}
+.sub{margin-top:12px;text-align:center;opacity:0;animation:subFade .8s 1.6s forwards}
+.sub b{letter-spacing:6px;font-size:22px;font-weight:900} .sub span{font-size:9px;letter-spacing:4px;opacity:.5;display:block;margin-top:6px}
+@keyframes subFade{to{opacity:1}} #intro.out{transform:scale(1.2);filter:blur(20px);opacity:0;visibility:hidden}
 .screen{position:fixed;inset:0;background:#000;z-index:9000;display:none;padding:18px;overflow-y:auto}.screen.active{display:flex}
 .center{margin:auto;width:100%;max-width:380px}
-.input{width:100%;background:#1e1e1e;border:1px solid #333;color:#fff;padding:15px;border-radius:8px;margin-top:12px}
-.btnR{width:100%;background:#e50914;color:#fff;border:none;padding:15px;border-radius:8px;font-weight:900;margin-top:16px}
-.top{position:sticky;top:0;z-index:20;background:#000;padding:10px 12px;display:flex;justify-content:space-between}
+.input{width:100%;background:#1e1e1e;border:1px solid #333;color:#fff;padding:15px;border-radius:8px;margin-top:12px;font-size:15px}
+.btnR{width:100%;background:#e50914;color:#fff;border:none;padding:15px;border-radius:8px;font-weight:900;margin-top:16px;font-size:16px;cursor:pointer}
+.top{position:sticky;top:0;z-index:20;background:rgba(0,0,0,.95);backdrop-filter:blur(10px);padding:10px 12px;display:flex;justify-content:space-between;align-items:center}
 .mf-logo{color:#e50914;font-weight:900;font-size:30px;font-family:Impact} .mf-logo b:first-child{color:#fff}
 .chips{display:flex;gap:8px;overflow-x:auto;padding:0 12px 14px} .chips::-webkit-scrollbar{display:none} .chip{padding:9px 16px;border-radius:20px;background:#222;border:1px solid #333;white-space:nowrap;font-size:14px}
-.hero{margin:0 12px;height:56vw;max-height:380px;border-radius:10px;overflow:hidden;position:relative;background:#111} .hero img{width:100%;height:100%;object-fit:cover} .hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,#000 35%,transparent)} .heroB{position:absolute;bottom:10px;left:10px;right:10px;z-index:2}
-.btnW{width:100%;background:#fff;color:#000;border:none;border-radius:6px;padding:13px;font-weight:900;display:flex;justify-content:center} .btnG{width:100%;background:rgba(120,120,120,.4);color:#fff;border:none;border-radius:6px;padding:12px;margin-top:8px;display:flex;justify-content:center;font-weight:700}
-.sec{margin-top:20px;padding-left:12px} .secT{font-weight:700;margin-bottom:10px} .row{display:flex;gap:8px;overflow-x:auto;padding-right:12px} .row::-webkit-scrollbar{display:none} .card{width:112px;min-width:112px;height:162px;border-radius:6px;overflow:hidden;background:#111;flex-shrink:0;cursor:pointer} .card img{width:100%;height:100%;object-fit:cover}
+.hero{margin:0 12px;height:56vw;max-height:380px;border-radius:10px;overflow:hidden;position:relative;background:#111} .hero img{width:100%;height:100%;object-fit:cover} .hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,#000 40%,transparent 70%)} .heroB{position:absolute;bottom:10px;left:10px;right:10px;z-index:2}
+.btnW{width:100%;background:#fff;color:#000;border:none;border-radius:6px;padding:13px;font-weight:900;display:flex;justify-content:center;cursor:pointer} .btnG{width:100%;background:rgba(120,120,120,.4);color:#fff;border:none;border-radius:6px;padding:12px;margin-top:8px;display:flex;justify-content:center;font-weight:700}
+.sec{margin-top:20px;padding-left:12px} .secT{font-weight:700;margin-bottom:10px;font-size:16px} .row{display:flex;gap:8px;overflow-x:auto;padding-right:12px} .row::-webkit-scrollbar{display:none} .card{width:112px;min-width:112px;height:162px;border-radius:6px;overflow:hidden;background:#111;flex-shrink:0;cursor:pointer;position:relative} .card img{width:100%;height:100%;object-fit:cover}
 .bottom{position:fixed;bottom:12px;left:10px;right:10px;background:#232323;border-radius:28px;display:flex;justify-content:space-around;padding:8px 2px;z-index:30} .b{flex:1;text-align:center;opacity:.6;font-size:10px} .b.active{opacity:1} .b img{width:26px;height:26px;border-radius:50%}
-#app{display:none;padding-bottom:95px} #detail{position:fixed;inset:0;background:#000;z-index:60;display:none;overflow-y:auto} #player{position:fixed;inset:0;background:#000;z-index:80;display:none} #player iframe{width:100%;height:100%;border:none}
-.tag{display:inline-block;background:#222;padding:7px 14px;border-radius:8px;font-size:13px} .p-hero{position:absolute;inset:0;background-size:cover;opacity:.5} .p-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent,#000 90%)}
+#app{display:none;padding-bottom:95px} #detail{position:fixed;inset:0;background:#000;z-index:60;display:none;overflow-y:auto;padding-bottom:20px} #player{position:fixed;inset:0;background:#000;z-index:80;display:none}
+.tag{display:inline-block;background:#222;padding:7px 14px;border-radius:8px;font-size:13px} .p-hero{position:absolute;inset:0;background-size:cover;opacity:.4} .p-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent,#000 90%)}
 .pinDots{display:flex;gap:10px;justify-content:center;margin:20px 0} .pinDots div{width:50px;height:58px;border:2px solid #444;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px} .npad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px} .npad button{background:#222;border:none;color:#fff;padding:18px;border-radius:12px;font-size:20px;font-weight:700}
+.serverBar{position:absolute;top:0;left:0;right:0;background:#111;padding:10px 12px;display:flex;gap:8px;align-items:center;z-index:10} .serverBar button{padding:6px 12px;border-radius:16px;border:1px solid #333;background:#222;color:#fff;font-size:12px} .serverBar button.active{background:#fff;color:#000}
 </style>
 </head>
 <body>
 
-<div id="intro"><div class="mf"><b>M</b><b>F</b></div><div style="letter-spacing:3px;font-weight:900;margin-top:6px">MADARA <span style="color:#e50914">FLIX</span></div></div>
+<div id="intro"><div class="mf-wrap"><div class="mf-logo-intro"><b>M</b><b>F</b></div><div class="light"></div><div class="sub"><b>MADARA <span style="color:#e50914">FLIX</span></b><span>TON UNIVERS. SANS LIMITES.</span></div></div></div>
 
-<!-- LOGIN GMAIL / NUMERO SEPARÉ -->
-<div id="auth" class="screen active"><div class="center"><h1 style="font-weight:900;font-size:28px">MADARA <span style="color:#e50914">FLIX</span></h1><p style="opacity:.6;font-size:13px;margin-top:8px">Connecte-toi avec ton Gmail ou Numéro. Chaque Gmail = un compte séparé. Si tu donnes ton Gmail à quelqu'un, il pourra créer ses profils chez toi.</p><input id="ident" class="input" placeholder="Gmail ou Numéro"><input id="pass" type="password" class="input" placeholder="Mot de passe"><button class="btnR" onclick="login()">Continuer sur Madara Flix</button><div id="msg" style="color:#ff3b30;margin-top:10px;font-size:13px"></div></div></div>
+<div id="auth" class="screen active"><div class="center"><h1 style="font-weight:900;font-size:30px">MADARA <span style="color:#e50914">FLIX</span></h1><p style="opacity:.6;font-size:13px;margin-top:8px">Gmail ou Numéro = compte séparé. Si tu partages ton Gmail, la personne crée ses profils chez toi.</p><input id="ident" class="input" placeholder="Gmail ou Numéro"><input id="pass" type="password" class="input" placeholder="Mot de passe"><button class="btnR" onclick="login()">Continuer</button><div id="msg" style="color:#ff3b30;margin-top:10px;font-size:13px"></div></div></div>
 
-<!-- PROFILS : MADARA SEUL AU DEBUT -->
-<div id="profiles" class="screen"><div class="p-hero" id="pHero"></div><div class="center" style="position:relative;z-index:2;text-align:center"><span class="tag">👍 Parmi les plus aimés</span><h3 style="margin-top:14px">Choisissez votre profil</h3><div id="pGrid" style="display:flex;gap:16px;justify-content:center;margin-top:18px;flex-wrap:wrap"></div><button onclick="showCreateP()" style="margin-top:20px;background:#222;border:1px solid #333;color:#fff;padding:10px 18px;border-radius:20px">+ Ajouter un profil</button><br><button onclick="showSettings()" style="margin-top:12px;background:transparent;border:none;color:#888;font-size:13px">⚙️ Paramètres - Code PIN 4 chiffres</button><br><button onclick="logout()" style="margin-top:8px;background:transparent;border:none;color:#555;font-size:12px">Changer de Gmail/Numéro</button></div></div>
+<div id="profiles" class="screen"><div class="p-hero" id="pHero"></div><div class="center" style="position:relative;z-index:2;text-align:center"><span class="tag">👍 Parmi les plus aimés</span><h3 style="margin-top:14px">Choisissez votre profil</h3><div id="pGrid" style="display:flex;gap:18px;justify-content:center;margin-top:20px;flex-wrap:wrap"></div><button onclick="showCreateP()" style="margin-top:24px;background:#222;border:1px solid #333;color:#fff;padding:10px 18px;border-radius:20px">+ Ajouter un profil</button><br><button onclick="showSettings()" style="margin-top:14px;background:transparent;border:none;color:#888;font-size:13px">⚙️ Paramètres - Code PIN 4 chiffres</button><br><button onclick="logout()" style="margin-top:8px;background:transparent;border:none;color:#555;font-size:12px">Changer de Gmail/Numéro</button></div></div>
 
-<div id="createP" class="screen"><div class="center"><h2>Nouveau profil</h2><input id="pName" class="input" placeholder="Nom ex: Madara225"><div style="margin-top:12px">Avatar</div><div style="display:flex;gap:8px;margin-top:8px"><img onclick="pickAv(this,'https://i.pravatar.cc/300?img=11')" src="https://i.pravatar.cc/100?img=11" style="width:60px;height:60px;border-radius:50%;border:2px solid #fff"><img onclick="pickAv(this,'https://i.pravatar.cc/300?img=5')" src="https://i.pravatar.cc/100?img=5" style="width:60px;height:60px;border-radius:50%"><img onclick="pickAv(this,'https://i.pravatar.cc/300?img=8')" src="https://i.pravatar.cc/100?img=8" style="width:60px;height:60px;border-radius:50%"></div><button class="btnR" onclick="saveP()">Créer</button><button class="input" onclick="hideCreateP()">Annuler</button></div></div>
+<div id="createP" class="screen"><div class="center"><h2>Nouveau profil</h2><input id="pName" class="input" placeholder="Nom"><div style="margin-top:12px;font-size:13px">Avatar</div><div style="display:flex;gap:8px;margin-top:8px"><img onclick="pickAv(this,'https://i.pravatar.cc/300?img=15')" src="https://i.pravatar.cc/100?img=15" style="width:60px;height:60px;border-radius:50%;border:2px solid #fff"><img onclick="pickAv(this,'https://i.pravatar.cc/300?img=11')" src="https://i.pravatar.cc/100?img=11" style="width:60px;height:60px;border-radius:50%"><img onclick="pickAv(this,'https://i.pravatar.cc/300?img=32')" src="https://i.pravatar.cc/100?img=32" style="width:60px;height:60px;border-radius:50%"></div><button class="btnR" onclick="saveP()">Créer</button><button class="input" onclick="hideCreateP()">Annuler</button></div></div>
 
-<div id="settings" class="screen"><div class="center"><h2>⚙️ Code PIN</h2><p style="opacity:.6;font-size:13px">Mets un code à 4 chiffres pour chaque profil si tu veux verrouiller</p><div id="settingsList" style="margin-top:14px"></div><button class="input" onclick="hideSettings()">Fermer</button></div></div>
+<div id="settings" class="screen"><div class="center"><h2>⚙️ PIN 4 chiffres</h2><div id="settingsList" style="margin-top:14px"></div><button class="input" onclick="hideSettings()">Fermer</button></div></div>
 
 <div id="pinScreen" class="screen"><div class="center" style="text-align:center"><div id="pinAv" style="width:90px;height:90px;border-radius:16px;overflow:hidden;margin:0 auto;background:#222"></div><h3 id="pinName" style="margin-top:10px"></h3><div class="pinDots" id="dots"><div></div><div></div><div></div><div></div></div><div class="npad"><button onclick="tp(1)">1</button><button onclick="tp(2)">2</button><button onclick="tp(3)">3</button><button onclick="tp(4)">4</button><button onclick="tp(5)">5</button><button onclick="tp(6)">6</button><button onclick="tp(7)">7</button><button onclick="tp(8)">8</button><button onclick="tp(9)">9</button><button></button><button onclick="tp(0)">0</button><button onclick="dp()">⌫</button></div><button class="input" onclick="backP()">Retour</button></div></div>
 
-<div id="app"><div class="top"><div style="display:flex;align-items:center;gap:8px"><div class="mf-logo"><b>M</b><b>F</b></div><b>Accueil</b></div><div style="display:flex;gap:12px">⬇ 🔔</div></div><div class="chips"><div class="chip">Séries</div><div class="chip">Films</div><div class="chip">Jeux</div><div class="chip">Halloween</div><div class="chip">Anime</div></div><div class="hero" id="hero"></div><div id="sections"></div><div class="bottom"><div class="b active"><div style="font-size:22px">⌂</div>Accueil</div><div class="b"><div style="font-size:22px">◫</div>Extraits</div><div class="b"><div style="font-size:22px">⌕</div>Rechercher</div><div class="b active"><img id="bAv"><div>Mon MadaraFlix</div></div></div></div>
+<div id="app"><div class="top"><div style="display:flex;align-items:center;gap:8px"><div class="mf-logo"><b>M</b><b>F</b></div><b>Accueil</b></div><div style="display:flex;gap:12px">⬇ 🔔</div></div><div class="chips"><div class="chip">Séries</div><div class="chip">Films</div><div class="chip">Anime</div><div class="chip">Halloween</div></div><div class="hero" id="hero"></div><div id="sections"></div><div class="bottom"><div class="b active"><div style="font-size:22px">⌂</div>Accueil</div><div class="b"><div style="font-size:22px">◫</div>Extraits</div><div class="b"><div style="font-size:22px">⌕</div>Rechercher</div><div class="b active"><img id="bAv"><div>Mon MadaraFlix</div></div></div></div>
 
 <div id="detail"></div>
-<div id="player"><button onclick="document.getElementById('player').style.display='none';document.getElementById('player').innerHTML='<button onclick=&quot;document.getElementById(&apos;player&apos;).style.display=&apos;none&apos;&quot; style=&quot;position:absolute;top:12px;left:12px;z-index:10;background:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:800&quot;>✕ Fermer</button>'" style="position:absolute;top:12px;left:12px;z-index:10;background:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:800">✕ Fermer</button></div>
+<div id="player">
+  <div class="serverBar"><button onclick="document.getElementById('player').style.display='none'" style="background:#fff;color:#000">✕</button><button id="sv1" class="active" onclick="switchServer(1)">Serveur 1</button><button id="sv2" onclick="switchServer(2)">Serveur 2</button><button id="sv3" onclick="switchServer(3)">Serveur 3</button><span style="margin-left:auto;font-size:11px;opacity:.6">MF Player</span></div>
+  <iframe id="playerFrame" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-presentation" style="width:100%;height:100%;border:none;padding-top:48px;background:#000"></iframe>
+</div>
 
 <script>
 const TMDB_KEY="4d915c255bcab0ffd0b07dd2a63f3387";
 const W500="https://image.tmdb.org/t/p/w500", ORIG="https://image.tmdb.org/t/p/original";
-let accounts=JSON.parse(localStorage.getItem('mf_v9')||'{}');
-let curAcc=null, curProf=null, avatar="https://i.pravatar.cc/300?img=11", pin="", pinTarget=null, ALL=[];
+let accounts=JSON.parse(localStorage.getItem('mf_final_v10')||'{}');
+let curAcc=null, curProf=null, avatar="https://i.pravatar.cc/300?img=15", pin="", pinTarget=null, ALL=[], curMovie=null, curServer=1;
 
 function login(){
  const id=document.getElementById('ident').value.trim().toLowerCase(), p=document.getElementById('pass').value.trim();
- if(!id||!p) return document.getElementById('msg').innerText="Gmail/Numéro et mot de passe requis";
+ if(!id||!p) return document.getElementById('msg').innerText="Remplis Gmail/Numéro";
  if(!accounts[id]){
-   // NOUVEAU GMAIL = NOUVEAU COMPTE SEPARÉ AVEC SEULEMENT MADARA
    accounts[id]={id,pass:p,profiles:[{id:Date.now().toString(),name:"Madara",avatar:"https://i.pravatar.cc/300?img=15",pin:null}]};
-   localStorage.setItem('mf_v9',JSON.stringify(accounts));
+   localStorage.setItem('mf_final_v10',JSON.stringify(accounts));
  } else if(accounts[id].pass!==p) return document.getElementById('msg').innerText="Mot de passe faux";
  curAcc=id; showProfiles();
 }
@@ -64,54 +74,67 @@ function showProfiles(){
  document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('active'); s.style.display='none'});
  document.getElementById('profiles').classList.add('active'); document.getElementById('profiles').style.display='flex';
  const acc=accounts[curAcc];
- document.getElementById('pGrid').innerHTML=acc.profiles.map(pr=>`<div onclick="openProf('${pr.id}')" style="cursor:pointer;text-align:center"><img src="${pr.avatar}" style="width:90px;height:90px;border-radius:14px;object-fit:cover"><div style="font-size:13px;margin-top:6px">${pr.name} ${pr.pin?'🔒':''}</div></div>`).join('')+`<div onclick="showCreateP()" style="cursor:pointer;text-align:center"><div style="width:90px;height:90px;border-radius:14px;background:#222;display:flex;align-items:center;justify-content:center;font-size:28px">+</div><div style="font-size:12px;margin-top:6px">Ajouter</div></div>`;
+ document.getElementById('pGrid').innerHTML=acc.profiles.map(pr=>`<div onclick="openProf('${pr.id}')" style="cursor:pointer;text-align:center"><img src="${pr.avatar}" style="width:92px;height:92px;border-radius:16px;object-fit:cover;border:${pr.name==='Madara'?'2px solid #e50914':''}"><div style="font-size:13px;margin-top:6px;font-weight:${pr.name==='Madara'?'900':''}">${pr.name} ${pr.pin?'🔒':''}</div></div>`).join('')+`<div onclick="showCreateP()" style="cursor:pointer;text-align:center"><div style="width:92px;height:92px;border-radius:16px;background:#222;display:flex;align-items:center;justify-content:center;font-size:28px">+</div><div style="font-size:12px;margin-top:6px">Ajouter</div></div>`;
 }
 function showCreateP(){document.getElementById('createP').classList.add('active'); document.getElementById('createP').style.display='flex'}
 function hideCreateP(){document.getElementById('createP').classList.remove('active'); document.getElementById('createP').style.display='none'}
 function pickAv(el,url){avatar=url; el.parentElement.querySelectorAll('img').forEach(i=>i.style.border='none'); el.style.border='2px solid #fff'}
-function saveP(){const n=document.getElementById('pName').value.trim(); if(!n) return alert('Nom'); accounts[curAcc].profiles.push({id:Date.now().toString(),name:n,avatar,pin:null}); localStorage.setItem('mf_v9',JSON.stringify(accounts)); hideCreateP(); showProfiles()}
+function saveP(){const n=document.getElementById('pName').value.trim(); if(!n) return alert('Nom'); accounts[curAcc].profiles.push({id:Date.now().toString(),name:n,avatar,pin:null}); localStorage.setItem('mf_final_v10',JSON.stringify(accounts)); hideCreateP(); showProfiles()}
 function showSettings(){const acc=accounts[curAcc]; document.getElementById('settingsList').innerHTML=acc.profiles.map(pr=>`<div style="background:#111;padding:12px;border-radius:10px;margin-top:10px;display:flex;justify-content:space-between"><div><b>${pr.name}</b><br><span style="font-size:12px;opacity:.6">PIN: ${pr.pin||'Aucun'}</span></div><button onclick="setPin('${pr.id}')" style="background:#e50914;color:#fff;border:none;padding:8px 12px;border-radius:6px">PIN</button></div>`).join(''); document.getElementById('settings').classList.add('active'); document.getElementById('settings').style.display='flex'}
 function hideSettings(){document.getElementById('settings').classList.remove('active'); document.getElementById('settings').style.display='none'}
-function setPin(id){const code=prompt('Code 4 chiffres (vide pour enlever):'); if(code===null) return; if(code===''||/^\d{4}$/.test(code)){accounts[curAcc].profiles.find(p=>p.id===id).pin=code===''?null:code; localStorage.setItem('mf_v9',JSON.stringify(accounts)); showSettings(); showProfiles()} else alert('4 chiffres')}
+function setPin(id){const code=prompt('Code 4 chiffres (vide pour enlever):'); if(code===null) return; if(code===''||/^\d{4}$/.test(code)){accounts[curAcc].profiles.find(p=>p.id===id).pin=code===''?null:code; localStorage.setItem('mf_final_v10',JSON.stringify(accounts)); showSettings(); showProfiles()} else alert('4 chiffres')}
 function openProf(id){const pr=accounts[curAcc].profiles.find(p=>p.id===id); if(pr.pin){pinTarget=pr; pin=""; document.getElementById('pinName').innerText=pr.name; document.getElementById('pinAv').innerHTML=`<img src="${pr.avatar}" style="width:100%;height:100%;object-fit:cover">`; upd(); document.getElementById('pinScreen').classList.add('active'); document.getElementById('pinScreen').style.display='flex'} else enterApp(pr)}
-function tp(n){if(pin.length>=4) return; pin+=n; upd(); if(pin.length===4){if(pin===pinTarget.pin){document.getElementById('pinScreen').style.display='none'; enterApp(pinTarget)} else {pin=""; upd(); alert('Faux')}}} function dp(){pin=pin.slice(0,-1); upd()} function upd(){document.querySelectorAll('#dots div').forEach((d,i)=>d.innerText=pin[i]?'•':'')} function backP(){document.getElementById('pinScreen').style.display='none'}
+function tp(n){if(pin.length>=4) return; pin+=n; upd(); if(pin.length===4){if(pin===pinTarget.pin){document.getElementById('pinScreen').style.display='none'; enterApp(pinTarget)} else {pin=""; upd(); alert('Faux code')}}} function dp(){pin=pin.slice(0,-1); upd()} function upd(){document.querySelectorAll('#dots div').forEach((d,i)=>d.innerText=pin[i]?'•':'')} function backP(){document.getElementById('pinScreen').style.display='none'}
 function logout(){document.querySelectorAll('.screen').forEach(s=>{s.style.display='none'; s.classList.remove('active')}); document.getElementById('auth').style.display='flex'; document.getElementById('auth').classList.add('active')}
 function enterApp(pr){curProf=pr; document.querySelectorAll('.screen').forEach(s=>{s.style.display='none'; s.classList.remove('active')}); document.getElementById('app').style.display='block'; document.getElementById('bAv').src=pr.avatar; load()}
 
 async function fetchMulti(u){try{const r=await fetch(u); const j=await r.json(); return j.results||[]}catch{return[]}}
 async function load(){
- let res=[]; res=res.concat(await fetchMulti(`https://api.themoviedb.org/3/trending/all/day?api_key=${TMDB_KEY}&language=fr-FR`)); res=res.concat(await fetchMulti(`https://api.themoviedb.org/3/movie/popular?api_key=${TMDB_KEY}&language=fr-FR&page=1`)); res=res.concat(await fetchMulti(`https://api.themoviedb.org/3/tv/popular?api_key=${TMDB_KEY}&language=fr-FR&page=1`)); res=res.concat(await fetchMulti(`https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_KEY}&language=fr-FR&with_genres=16&page=1`));
- const map=new Map(); res.forEach(m=>{if(!map.has(m.id)) map.set(m.id,{id:m.id,title:m.title||m.name,poster:m.poster_path?W500+m.poster_path:'',backdrop:m.backdrop_path?ORIG+m.backdrop_path:W500+m.poster_path,overview:m.overview||'',type:m.media_type||'movie'})}); ALL=[...map.values()].slice(0,200); render();
+ let res=[]; res=res.concat(await fetchMulti(`https://api.themoviedb.org/3/trending/all/day?api_key=${TMDB_KEY}&language=fr-FR`)); res=res.concat(await fetchMulti(`https://api.themoviedb.org/3/movie/popular?api_key=${TMDB_KEY}&language=fr-FR&page=1`)); res=res.concat(await fetchMulti(`https://api.themoviedb.org/3/movie/popular?api_key=${TMDB_KEY}&language=fr-FR&page=2`)); res=res.concat(await fetchMulti(`https://api.themoviedb.org/3/tv/popular?api_key=${TMDB_KEY}&language=fr-FR&page=1`)); res=res.concat(await fetchMulti(`https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_KEY}&language=fr-FR&with_genres=16&page=1`));
+ const map=new Map(); res.forEach(m=>{if(!map.has(m.id)) map.set(m.id,{id:m.id,title:m.title||m.name,poster:m.poster_path?W500+m.poster_path:'',backdrop:m.backdrop_path?ORIG+m.backdrop_path:W500+m.poster_path,overview:m.overview||'',type:m.media_type||'movie'})}); ALL=[...map.values()].slice(0,600); render();
 }
 function render(){
  if(!ALL.length) return;
  document.getElementById('pHero').style.backgroundImage=`url('${ALL[0].backdrop}')`;
  const h=ALL[0]; document.getElementById('hero').innerHTML=`<img src="${h.backdrop}"><div class="heroB"><button class="btnW" onclick="playMovie(${h.id},'${h.type}')">▶ Regarder le film</button><button class="btnG">+ Ma liste</button></div>`;
- const cats=[["Reprendre avec le profil de "+curProf.name,[ALL[0]],true],["Séries policières",ALL.slice(1,6),false],["Anime et animation",ALL.slice(6,12),false],["Films populaires",ALL.slice(12,20),false]];
- document.getElementById('sections').innerHTML=cats.map(([t,arr,isResume])=>`<div class="sec"><div class="secT">${t}</div><div class="row">${arr.map(m=>`<div class="card" style="${isResume?'width:145px;min-width:145px;height:84px':''}" onclick="openDetail(${m.id})"><img src="${isResume?m.backdrop:m.poster}"></div>`).join('')}</div></div>`).join('');
+ const cats=[["Reprendre avec le profil de "+curProf.name,[ALL[0]],true],["Séries policières",ALL.slice(1,7),false],["Anime et animation",ALL.slice(7,14),false],["Films populaires",ALL.slice(14,24),false],["Top Madara Flix",ALL.slice(24,34),false]];
+ document.getElementById('sections').innerHTML=cats.map(([t,arr,isResume])=>`<div class="sec"><div class="secT">${t}</div><div class="row">${arr.map(m=>`<div class="card" style="${isResume?'width:150px;min-width:150px;height:86px':''}" onclick="openDetail(${m.id})"><img src="${isResume?m.backdrop:m.poster}" loading="lazy"></div>`).join('')}</div></div>`).join('');
 }
 async function openDetail(id){
- const m=ALL.find(x=>x.id===id); if(!m) return;
- let seasons=[]; try{const tv=await fetch(`https://api.themoviedb.org/3/tv/${m.id}?api_key=${TMDB_KEY}&language=fr-FR`).then(r=>r.json()); if(tv?.number_of_seasons){for(let s=1;s<=Math.min(tv.number_of_seasons,10);s++){const sd=await fetch(`https://api.themoviedb.org/3/tv/${m.id}/season/${s}?api_key=${TMDB_KEY}&language=fr-FR`).then(r=>r.json()).catch(()=>null); if(sd?.episodes) seasons.push({num:s,name:sd.name||`Saison ${s}`,eps:sd.episodes})}}}catch{}
- let html=`<div style="height:62vh;background:url('${m.backdrop}') center/cover;position:relative"><button onclick="document.getElementById('detail').style.display='none'" style="position:absolute;top:14px;left:14px;background:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:800">✕</button><div style="position:absolute;inset:0;background:linear-gradient(to top,#000 35%,transparent)"></div></div><div style="padding:14px"><h2>${m.title}</h2><p style="opacity:.7;font-size:13px;margin-top:6px">${m.overview.slice(0,200)}</p><button class="btnW" style="margin-top:14px" onclick="playMovie(${m.id},'${m.type}')">▶ Regarder sur Madara Flix</button>`;
+ const m=ALL.find(x=>x.id===id); if(!m) return; curMovie=m;
+ let seasons=[]; try{const tv=await fetch(`https://api.themoviedb.org/3/tv/${m.id}?api_key=${TMDB_KEY}&language=fr-FR`).then(r=>r.json()); if(tv?.number_of_seasons){for(let s=1;s<=Math.min(tv.number_of_seasons,12);s++){const sd=await fetch(`https://api.themoviedb.org/3/tv/${m.id}/season/${s}?api_key=${TMDB_KEY}&language=fr-FR`).then(r=>r.json()).catch(()=>null); if(sd?.episodes) seasons.push({num:s,name:sd.name||`Saison ${s}`,eps:sd.episodes})}}}catch{}
+ let html=`<div style="height:62vh;background:url('${m.backdrop}') center/cover;position:relative"><button onclick="document.getElementById('detail').style.display='none'" style="position:absolute;top:14px;left:14px;background:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:800">✕</button><div style="position:absolute;inset:0;background:linear-gradient(to top,#000 35%,transparent)"></div></div><div style="padding:14px"><h2>${m.title}</h2><p style="opacity:.7;font-size:13px;margin-top:6px">${m.overview.slice(0,220)}</p><button class="btnW" style="margin-top:14px" onclick="playMovie(${m.id},'${m.type}')">▶ Regarder sur Madara Flix</button>`;
  if(seasons.length){html+=`<div style="display:flex;gap:8px;overflow-x:auto;margin-top:14px">`+seasons.map((s,i)=>`<button onclick="showS(${i})" style="background:${i==0?'#fff':'#222'};color:${i==0?'#000':'#fff'};border:none;padding:8px 14px;border-radius:20px;font-weight:700;white-space:nowrap">${s.name}</button>`).join('')+`</div><div id="eps"></div>`} html+=`</div>`; document.getElementById('detail').innerHTML=html; document.getElementById('detail').style.display='block'; window._seasons=seasons; window._mid=m.id; if(seasons.length) showS(0);
 }
 function showS(idx){const s=window._seasons[idx]; document.getElementById('eps').innerHTML=s.eps.map(ep=>`<div style="display:flex;gap:10px;padding:12px 0;border-bottom:1px solid #222" onclick="playEpisode(${window._mid},${s.num},${ep.episode_number})"><div style="opacity:.5;font-weight:800">${ep.episode_number}</div><img src="${ep.still_path?W500+ep.still_path:''}" style="width:110px;height:62px;border-radius:6px;background:#111;object-fit:cover"><div style="flex:1"><div style="font-size:13px;font-weight:700">${ep.name||'Episode '+ep.episode_number}</div><div style="font-size:11px;opacity:.5">${ep.overview?.slice(0,60)||''}</div></div><div>▶</div></div>`).join('')}
 
-// VRAIE LECTURE - PLUS D'ALERTE
+function getUrl(server, type, id, s, e){
+  if(type.includes('tv') || window._seasons){
+    if(server===1) return `https://vidlink.pro/tv/${id}/${s||1}/${e||1}`;
+    if(server===2) return `https://vidsrc.cc/v3/embed/tv/${id}/${s||1}/${e||1}`;
+    return `https://embed.su/embed/tv/${id}/${s||1}/${e||1}`;
+  } else {
+    if(server===1) return `https://vidlink.pro/movie/${id}`;
+    if(server===2) return `https://vidsrc.cc/v3/embed/movie/${id}`;
+    return `https://embed.su/embed/movie/${id}`;
+  }
+}
 function playMovie(id,type){
- const isTV=type==='tv'||type==='tv';
- const url=isTV?`https://vidsrc.to/embed/tv/${id}`:`https://vidsrc.to/embed/movie/${id}`;
- document.getElementById('player').innerHTML=`<button onclick="document.getElementById('player').style.display='none'" style="position:absolute;top:14px;left:14px;z-index:10;background:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:800">✕ Fermer</button><iframe src="${url}" allowfullscreen></iframe>`;
- document.getElementById('player').style.display='block';
+  curMovie={id,type,s:1,e:1}; curServer=1;
+  document.querySelectorAll('.serverBar button').forEach(b=>b.classList.remove('active')); document.getElementById('sv1').classList.add('active');
+  document.getElementById('playerFrame').src=getUrl(1,type,id); document.getElementById('player').style.display='block';
 }
 function playEpisode(tvId,season,episode){
- const url=`https://vidsrc.to/embed/tv/${tvId}/${season}/${episode}`;
- document.getElementById('player').innerHTML=`<button onclick="document.getElementById('player').style.display='none'" style="position:absolute;top:14px;left:14px;z-index:10;background:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:800">✕ Fermer</button><iframe src="${url}" allowfullscreen></iframe>`;
- document.getElementById('player').style.display='block';
+  curMovie={id:tvId,type:'tv',s:season,e:episode}; curServer=1;
+  document.querySelectorAll('.serverBar button').forEach(b=>b.classList.remove('active')); document.getElementById('sv1').classList.add('active');
+  document.getElementById('playerFrame').src=getUrl(1,'tv',tvId,season,episode); document.getElementById('player').style.display='block';
 }
-
-setTimeout(()=>{document.getElementById('intro').classList.add('out'); setTimeout(()=>document.getElementById('intro').style.display='none',800)},2400);
+function switchServer(n){
+  curServer=n; document.querySelectorAll('.serverBar button').forEach(b=>b.classList.remove('active')); document.getElementById('sv'+n).classList.add('active');
+  if(!curMovie) return;
+  document.getElementById('playerFrame').src=getUrl(n,curMovie.type,curMovie.id,curMovie.s,curMovie.e);
+}
+setTimeout(()=>{document.getElementById('intro').classList.add('out'); setTimeout(()=>document.getElementById('intro').style.display='none',800)},2800);
 </script>
 </body>
 </html>
